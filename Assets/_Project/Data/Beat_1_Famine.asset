@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df40e9f3c0764af1ab09a3669edb2fd1, type: 3}
+  m_Name: Beat_1_Famine
+  m_EditorClassIdentifier: Assembly-CSharp::Itan.Story.StoryBeat
+  beatNumber: 1
+  title: The Famine
+  narration:
+  - clip: {fileID: 8300000, guid: f3fdb36aa88284bc1bd8f644f90f5ad8, type: 3}
+    subtitle: Long ago, a great famine came to the land. Every pot was empty.
+  - clip: {fileID: 8300000, guid: fda82eb5781d04c2caa072b37e83846f, type: 3}
+    subtitle: "But Aj\xE1, the dog, never looked hungry. \xCCj\xE0p\xE1, the tortoise,
+      wanted to know why."
+  wordCard: {fileID: 11400000, guid: b6ea64a380cb541f7a788caa28c9bdde, type: 2}

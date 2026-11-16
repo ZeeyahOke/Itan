@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7338212401849839d0b063bbc4d4239, type: 3}
+  m_Name: Word_Ijapa
+  m_EditorClassIdentifier: Assembly-CSharp::Itan.Story.WordCard
+  yorubaWord: "\xECj\xE0p\xE1"
+  englishMeaning: tortoise
+  pronunciation: ee-jah-PAH
+  elderClip: {fileID: 8300000, guid: 5abca71223e814812a2f296993c39e37, type: 3}
+  picture: {fileID: 0}

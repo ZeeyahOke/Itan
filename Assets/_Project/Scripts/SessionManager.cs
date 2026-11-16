@@ -1,4 +1,5 @@
 using Itan.Session.States;
+using Itan.UI;
 using UnityEngine;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 using UnityEngine.InputSystem;
@@ -13,7 +14,10 @@ namespace Itan.Session
     /// </summary>
     public class SessionManager : MonoBehaviour
     {
+        [SerializeField] StartMenuUI startMenu;
+
         public ISessionState CurrentState { get; private set; }
+        public StartMenuUI StartMenu => startMenu;
 
         void Start()
         {

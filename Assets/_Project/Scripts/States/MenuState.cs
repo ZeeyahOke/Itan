@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Itan.Session.States
 {
+    /// <summary>
+    /// Shows the title screen and waits for the visitor to press Begin.
+    /// </summary>
     public class MenuState : ISessionState
     {
         readonly SessionManager session;
@@ -14,6 +17,11 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter MenuState");
+            if (session.StartMenu != null)
+            {
+                session.StartMenu.Show();
+                session.StartMenu.BeginPressed += OnBegin;
+            }
         }
 
         public void Tick() { }
@@ -21,9 +29,16 @@ namespace Itan.Session.States
         public void Exit()
         {
             Debug.Log("[Session] Exit MenuState");
+            if (session.StartMenu != null)
+            {
+                session.StartMenu.BeginPressed -= OnBegin;
+                session.StartMenu.Hide();
+            }
         }
 
-        public void Skip()
+        public void Skip() => OnBegin();
+
+        void OnBegin()
         {
             session.ChangeState(new GreetingState(session));
         }

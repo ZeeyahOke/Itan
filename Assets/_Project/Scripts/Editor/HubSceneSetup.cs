@@ -3,6 +3,7 @@ using Itan.Interaction;
 using Itan.Narration;
 using Itan.Player;
 using Itan.Story;
+using Itan.Voice;
 using Itan.Session;
 using Itan.UI;
 using TMPro;
@@ -315,6 +316,17 @@ namespace Itan.EditorTools
 
             SaveScene();
             Debug.Log("[Itan] Calabash, stand and lap point added.");
+        }
+
+        [MenuItem("Itan/Scene/Add Mic Permission")]
+        public static void AddMicPermission()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (session.GetComponent<MicPermission>() != null) { Debug.Log("[Itan] Mic permission already added."); return; }
+            session.gameObject.AddComponent<MicPermission>();
+            SaveScene();
+            Debug.Log("[Itan] Mic permission request added.");
         }
 
         static void SaveScene()

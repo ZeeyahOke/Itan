@@ -54,6 +54,8 @@ namespace Itan.Interaction
         public void SnapToLap()
         {
             if (IsInLap) return;
+            // If it was never offered (e.g. the step was skipped), wake it up first so Awake runs.
+            if (!gameObject.activeSelf) gameObject.SetActive(true);
 
             if (grab.isSelected)
                 grab.interactionManager.CancelInteractableSelection((IXRSelectInteractable)grab);

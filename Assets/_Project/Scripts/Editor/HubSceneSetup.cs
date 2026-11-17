@@ -122,7 +122,7 @@ namespace Itan.EditorTools
             tmp.fontSize = size;
             tmp.fontStyle = style;
             tmp.color = color;
-            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.alignment = TextAlignmentOptions.CenterGeoAligned;
             tmp.raycastTarget = false;
         }
 

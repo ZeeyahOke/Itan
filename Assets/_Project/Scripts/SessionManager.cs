@@ -1,3 +1,4 @@
+using Itan.Player;
 using Itan.Session.States;
 using Itan.UI;
 using UnityEngine;
@@ -15,9 +16,11 @@ namespace Itan.Session
     public class SessionManager : MonoBehaviour
     {
         [SerializeField] StartMenuUI startMenu;
+        [SerializeField] SeatRecenter seat;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
+        public SeatRecenter Seat => seat;
 
         void Start()
         {

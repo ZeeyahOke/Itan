@@ -17,6 +17,8 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter MenuState");
+            // Face every visitor toward the fire at the same eye height.
+            if (session.Seat != null) session.Seat.Recenter();
             if (session.StartMenu != null)
             {
                 session.StartMenu.Show();

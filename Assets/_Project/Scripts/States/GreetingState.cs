@@ -14,6 +14,8 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter GreetingState");
+            // Face every visitor toward the fire at the same eye height.
+            if (session.Seat != null) session.Seat.Recenter();
         }
 
         public void Tick() { }

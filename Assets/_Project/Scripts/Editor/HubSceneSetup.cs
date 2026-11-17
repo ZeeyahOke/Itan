@@ -1,3 +1,4 @@
+using Itan.Player;
 using Itan.Session;
 using Itan.UI;
 using TMPro;
@@ -6,6 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.UI;
+using Unity.XR.CoreUtils;
 
 namespace Itan.EditorTools
 {
@@ -116,6 +118,36 @@ namespace Itan.EditorTools
             tmp.color = color;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.raycastTarget = false;
+        }
+
+        // Eye point for a seated visitor, above the player's stool, facing the fire.
+        static readonly Vector3 SeatEyePosition = new Vector3(0f, 1.15f, 0f);
+
+        [MenuItem("Itan/Scene/Add Seat Recenter")]
+        public static void AddSeatRecenter()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            var origin = Object.FindFirstObjectByType<XROrigin>();
+            if (session == null || origin == null) { Debug.LogError("[Itan] Need a SessionManager and an XR Origin."); return; }
+            if (origin.GetComponent<SeatRecenter>() != null) { Debug.Log("[Itan] Seat recenter already added."); return; }
+
+            var eye = new GameObject("SeatEye").transform;
+            var playerSpot = GameObject.Find("PlayerSpot");
+            if (playerSpot != null) eye.SetParent(playerSpot.transform);
+            eye.SetPositionAndRotation(SeatEyePosition, Quaternion.LookRotation(Vector3.forward)); // toward the fire
+
+            var seat = origin.gameObject.AddComponent<SeatRecenter>();
+            var seatSo = new SerializedObject(seat);
+            seatSo.FindProperty("origin").objectReferenceValue = origin;
+            seatSo.FindProperty("seatEye").objectReferenceValue = eye;
+            seatSo.ApplyModifiedPropertiesWithoutUndo();
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("seat").objectReferenceValue = seat;
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Seat recenter added.");
         }
 
         static void SaveScene()

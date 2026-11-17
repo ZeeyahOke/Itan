@@ -1,4 +1,5 @@
 using Itan.Detection;
+using Itan.Interaction;
 using Itan.Narration;
 using Itan.Player;
 using Itan.Story;
@@ -23,6 +24,7 @@ namespace Itan.Session
         [SerializeField] NarrationManager narration;
         [SerializeField] OpeningScript opening;
         [SerializeField] GreetingDetector greeting;
+        [SerializeField] Calabash calabash;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -30,6 +32,7 @@ namespace Itan.Session
         public NarrationManager Narration => narration;
         public OpeningScript Opening => opening;
         public GreetingDetector Greeting => greeting;
+        public Calabash Calabash => calabash;
 
         void Start()
         {

@@ -48,5 +48,16 @@ namespace Itan.EditorTools
 
         [MenuItem("Itan/Debug/Simulate Bow", true)]
         static bool CanSimulateBow() => Application.isPlaying;
+
+        // Same result as grabbing the offered calabash with a controller ray.
+        [MenuItem("Itan/Debug/Simulate Grab Calabash")]
+        static void SimulateGrab()
+        {
+            var calabash = Object.FindFirstObjectByType<Itan.Interaction.Calabash>();
+            if (calabash != null && calabash.gameObject.activeInHierarchy) calabash.SnapToLap();
+        }
+
+        [MenuItem("Itan/Debug/Simulate Grab Calabash", true)]
+        static bool CanSimulateGrab() => Application.isPlaying;
     }
 }

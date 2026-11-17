@@ -1,4 +1,5 @@
 using Itan.Detection;
+using Itan.Interaction;
 using Itan.Narration;
 using Itan.Player;
 using Itan.Story;
@@ -10,6 +11,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.UI;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using Unity.XR.CoreUtils;
 
 namespace Itan.EditorTools
@@ -244,6 +246,75 @@ namespace Itan.EditorTools
 
             SaveScene();
             Debug.Log("[Itan] Greeting detector added.");
+        }
+
+        // Calabash waits on a stand to the front-right, within arm's reach of the seat.
+        static readonly Vector3 CalabashStandPosition = new Vector3(0.45f, 0f, 0.5f);
+        // Lap: low and just in front of the seated visitor, easy to see by looking down.
+        static readonly Vector3 LapPosition = new Vector3(0f, 0.62f, 0.32f);
+
+        [MenuItem("Itan/Scene/Add Calabash")]
+        public static void AddCalabash()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (Object.FindFirstObjectByType<Calabash>(FindObjectsInactive.Include) != null) { Debug.Log("[Itan] Calabash already added."); return; }
+
+            var gourd = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Art/Materials/Greybox_Gourd.mat");
+            if (gourd == null)
+            {
+                gourd = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                gourd.SetColor("_BaseColor", new Color(0.72f, 0.45f, 0.2f));
+                gourd.SetFloat("_Smoothness", 0.35f);
+                AssetDatabase.CreateAsset(gourd, "Assets/_Project/Art/Materials/Greybox_Gourd.mat");
+            }
+            var wood = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Art/Materials/Greybox_Wood.mat");
+
+            // Stand (static, always there).
+            var stand = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            stand.name = "CalabashStand";
+            stand.transform.position = CalabashStandPosition + new Vector3(0f, 0.3f, 0f);
+            stand.transform.localScale = new Vector3(0.22f, 0.3f, 0.22f);
+            if (wood != null) stand.GetComponent<Renderer>().sharedMaterial = wood;
+            GameObjectUtility.SetStaticEditorFlags(stand, (StaticEditorFlags)~0);
+
+            // Lap point.
+            var lap = new GameObject("LapPoint").transform;
+            var playerSpot = GameObject.Find("PlayerSpot");
+            if (playerSpot != null) lap.SetParent(playerSpot.transform);
+            lap.position = LapPosition;
+
+            // Calabash: a squashed gourd with a short neck.
+            var calabashGo = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            calabashGo.name = "Calabash";
+            calabashGo.transform.position = CalabashStandPosition + new Vector3(0f, 0.72f, 0f);
+            calabashGo.transform.localScale = new Vector3(0.3f, 0.22f, 0.3f);
+            calabashGo.GetComponent<Renderer>().sharedMaterial = gourd;
+            var neck = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            neck.name = "Neck";
+            Object.DestroyImmediate(neck.GetComponent<Collider>());
+            neck.transform.SetParent(calabashGo.transform, false);
+            neck.transform.localPosition = new Vector3(0f, 0.5f, 0f);
+            neck.transform.localScale = new Vector3(0.35f, 0.15f, 0.35f);
+            neck.GetComponent<Renderer>().sharedMaterial = gourd;
+
+            var body = calabashGo.AddComponent<Rigidbody>();
+            body.isKinematic = true;     // floats on its stand until grabbed
+            body.useGravity = false;
+            var grab = calabashGo.AddComponent<XRGrabInteractable>();
+            grab.throwOnDetach = false;
+            var calabash = calabashGo.AddComponent<Calabash>();
+            var so = new SerializedObject(calabash);
+            so.FindProperty("lapPoint").objectReferenceValue = lap;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            calabashGo.SetActive(false); // hidden until the elder offers it
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("calabash").objectReferenceValue = calabash;
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Calabash, stand and lap point added.");
         }
 
         static void SaveScene()

@@ -4,7 +4,7 @@ namespace Itan.Session.States
 {
     /// <summary>
     /// The elder welcomes the visitor and asks them to bow. Once they bow,
-    /// he hands over the calabash, then the session moves on to the call.
+    /// he offers the calabash; when it is in their lap, the session moves on to the call.
     /// </summary>
     public class GreetingState : ISessionState
     {
@@ -22,6 +22,7 @@ namespace Itan.Session.States
             if (session.Seat != null) session.Seat.Recenter();
 
             session.Greeting.Bowed += OnBowed;
+            session.Calabash.Snapped += GoToCall;
             var o = session.Opening;
             session.Narration.PlaySequence(new[] { o.welcome, o.bowPrompt }, session.Greeting.StartListening);
         }
@@ -32,15 +33,22 @@ namespace Itan.Session.States
         {
             Debug.Log("[Session] Exit GreetingState");
             session.Greeting.Bowed -= OnBowed;
+            session.Calabash.Snapped -= GoToCall;
             session.Greeting.StopListening();
             session.Narration.Stop();
         }
 
-        public void Skip() => GoToCall();
+        public void Skip()
+        {
+            // Skipping still leaves the calabash in the lap, so later steps can rely on it.
+            if (!session.Calabash.IsInLap) session.Calabash.SnapToLap(); // fires Snapped → GoToCall
+            else GoToCall();
+        }
 
         void OnBowed()
         {
-            session.Narration.Play(session.Opening.calabashPrompt, GoToCall);
+            session.Calabash.Offer();
+            session.Narration.Play(session.Opening.calabashPrompt);
         }
 
         void GoToCall()

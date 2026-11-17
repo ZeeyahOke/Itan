@@ -1,3 +1,4 @@
+using Itan.Detection;
 using Itan.Narration;
 using Itan.Player;
 using Itan.Story;
@@ -222,6 +223,27 @@ namespace Itan.EditorTools
 
             SaveScene();
             Debug.Log("[Itan] Narration, elder voice and subtitles added.");
+        }
+
+        [MenuItem("Itan/Scene/Add Greeting Detector")]
+        public static void AddGreetingDetector()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            var origin = Object.FindFirstObjectByType<XROrigin>();
+            if (session == null || origin == null) { Debug.LogError("[Itan] Need a SessionManager and an XR Origin."); return; }
+            if (Object.FindFirstObjectByType<GreetingDetector>() != null) { Debug.Log("[Itan] Greeting detector already added."); return; }
+
+            var detector = new GameObject("GreetingDetector").AddComponent<GreetingDetector>();
+            var so = new SerializedObject(detector);
+            so.FindProperty("head").objectReferenceValue = origin.Camera.transform;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("greeting").objectReferenceValue = detector;
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Greeting detector added.");
         }
 
         static void SaveScene()

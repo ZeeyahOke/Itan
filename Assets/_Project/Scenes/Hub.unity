@@ -4079,6 +4079,7 @@ MonoBehaviour:
   seat: {fileID: 254238180}
   narration: {fileID: 18762073}
   opening: {fileID: 11400000, guid: e4be8f60bf9c346608dc58e076b3a6aa, type: 2}
+  greeting: {fileID: 1505007024}
 --- !u!4 &1031643428
 Transform:
   m_ObjectHideFlags: 0
@@ -5879,6 +5880,53 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483319272}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1505007023
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1505007025}
+  - component: {fileID: 1505007024}
+  m_Layer: 0
+  m_Name: GreetingDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1505007024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505007023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fafb5d3088b4a708807efb6ef06b28e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Itan.Detection.GreetingDetector
+  head: {fileID: 2144481859}
+  bowAngle: 25
+  holdSeconds: 0.5
+--- !u!4 &1505007025
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505007023}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1512488720
 GameObject:
   m_ObjectHideFlags: 0
@@ -9330,6 +9378,11 @@ Transform:
   - {fileID: 510702492}
   m_Father: {fileID: 1604033729}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &2144481859 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1767192434, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1188721590}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -9344,3 +9397,4 @@ SceneRoots:
   - {fileID: 2641031}
   - {fileID: 1208345539}
   - {fileID: 18762074}
+  - {fileID: 1505007025}

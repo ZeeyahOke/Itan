@@ -42,5 +42,11 @@ namespace Itan.EditorTools
 
         [MenuItem("Itan/Debug/Play Test Narration", true)]
         static bool CanPlayTestLine() => Application.isPlaying;
+
+        [MenuItem("Itan/Debug/Simulate Bow")]
+        static void SimulateBow() => Object.FindFirstObjectByType<Itan.Detection.GreetingDetector>()?.SimulateBow();
+
+        [MenuItem("Itan/Debug/Simulate Bow", true)]
+        static bool CanSimulateBow() => Application.isPlaying;
     }
 }

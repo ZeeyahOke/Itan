@@ -1,3 +1,4 @@
+using Itan.Detection;
 using Itan.Narration;
 using Itan.Player;
 using Itan.Story;
@@ -21,12 +22,14 @@ namespace Itan.Session
         [SerializeField] SeatRecenter seat;
         [SerializeField] NarrationManager narration;
         [SerializeField] OpeningScript opening;
+        [SerializeField] GreetingDetector greeting;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
         public SeatRecenter Seat => seat;
         public NarrationManager Narration => narration;
         public OpeningScript Opening => opening;
+        public GreetingDetector Greeting => greeting;
 
         void Start()
         {

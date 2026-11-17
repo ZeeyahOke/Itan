@@ -59,5 +59,34 @@ namespace Itan.EditorTools
 
         [MenuItem("Itan/Debug/Simulate Grab Calabash", true)]
         static bool CanSimulateGrab() => Application.isPlaying;
+
+        static Itan.Voice.MicResponseDetector Voice => Object.FindFirstObjectByType<Itan.Voice.MicResponseDetector>();
+
+        [MenuItem("Itan/Debug/Voice/Start Test Listen")]
+        static void TestListen()
+        {
+            var v = Voice;
+            if (v == null) return;
+            v.Missed -= OnTestMiss;
+            v.Missed += OnTestMiss;
+            v.Listen(() => Debug.Log("[Voice] Test answered"));
+        }
+
+        static void OnTestMiss(int misses) => Voice.ListenAgain();
+
+        [MenuItem("Itan/Debug/Voice/Simulate Voice")]
+        static void SimulateVoice() => Voice?.SimulateVoice();
+
+        [MenuItem("Itan/Debug/Voice/Simulate Silence")]
+        static void SimulateSilence() => Voice?.SimulateSilence();
+
+        [MenuItem("Itan/Debug/Voice/Press Fallback Button")]
+        static void PressFallback() => Voice?.PressFallback();
+
+        [MenuItem("Itan/Debug/Voice/Start Test Listen", true)]
+        [MenuItem("Itan/Debug/Voice/Simulate Voice", true)]
+        [MenuItem("Itan/Debug/Voice/Simulate Silence", true)]
+        [MenuItem("Itan/Debug/Voice/Press Fallback Button", true)]
+        static bool CanUseVoiceDebug() => Application.isPlaying;
     }
 }

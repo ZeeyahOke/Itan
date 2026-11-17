@@ -329,6 +329,94 @@ namespace Itan.EditorTools
             Debug.Log("[Itan] Mic permission request added.");
         }
 
+        // Voice prompt sits under the subtitles, so it never covers the elder.
+        static readonly Vector3 VoicePromptPosition = new Vector3(0f, 0.66f, 1.3f);
+        static readonly Quaternion VoicePromptRotation = Quaternion.Euler(28f, 0f, 0f);
+
+        [MenuItem("Itan/Scene/Add Voice Check")]
+        public static void AddVoiceCheck()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (Object.FindFirstObjectByType<MicResponseDetector>(FindObjectsInactive.Include) != null) { Debug.Log("[Itan] Voice check already added."); return; }
+
+            var canvasGo = new GameObject("VoicePrompt", typeof(RectTransform));
+            var canvas = canvasGo.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvasGo.AddComponent<CanvasScaler>().dynamicPixelsPerUnit = 2f;
+            canvasGo.AddComponent<TrackedDeviceGraphicRaycaster>();
+            var rect = (RectTransform)canvasGo.transform;
+            rect.sizeDelta = new Vector2(520f, 140f);
+            rect.SetPositionAndRotation(VoicePromptPosition, VoicePromptRotation);
+            rect.localScale = Vector3.one * PixelsToMetres;
+
+            // "Listening" cue.
+            var cue = new GameObject("ListeningCue", typeof(RectTransform));
+            var cueRect = (RectTransform)cue.transform;
+            cueRect.SetParent(rect, false);
+            cueRect.sizeDelta = new Vector2(520f, 80f);
+            var cueBg = cue.AddComponent<Image>();
+            cueBg.color = new Color(0.06f, 0.05f, 0.14f, 0.8f);
+            cueBg.raycastTarget = false;
+            AddText(cueRect, "Label", "Listening... say it aloud", 40, FontStyles.Italic,
+                    new Color(0.98f, 0.86f, 0.55f), Vector2.zero, cueRect.sizeDelta);
+
+            // Fallback button.
+            var fallback = new GameObject("FallbackPanel", typeof(RectTransform));
+            var fbRect = (RectTransform)fallback.transform;
+            fbRect.SetParent(rect, false);
+            fbRect.sizeDelta = new Vector2(420f, 120f);
+            var fbImage = fallback.AddComponent<Image>();
+            fbImage.color = new Color(0.85f, 0.45f, 0.15f);
+            var button = fallback.AddComponent<Button>();
+            button.targetGraphic = fbImage;
+            var colors = button.colors;
+            colors.highlightedColor = new Color(1f, 0.75f, 0.45f);
+            colors.pressedColor = new Color(0.7f, 0.35f, 0.1f);
+            button.colors = colors;
+            AddText(fbRect, "Label", "Tap to answer", 48, FontStyles.Bold, Color.white, Vector2.zero, fbRect.sizeDelta);
+
+            var detector = canvasGo.AddComponent<MicResponseDetector>();
+            var so = new SerializedObject(detector);
+            so.FindProperty("listeningCue").objectReferenceValue = cue;
+            so.FindProperty("fallbackPanel").objectReferenceValue = fallback;
+            so.FindProperty("fallbackButton").objectReferenceValue = button;
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("voice").objectReferenceValue = detector;
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Voice check and fallback button added.");
+        }
+
+        /// <summary>
+        /// Puts the world-space panels back at their layout positions. Re-run after
+        /// changing the positions above, to tune the layout in one place.
+        /// </summary>
+        [MenuItem("Itan/Scene/Apply UI Layout")]
+        public static void ApplyUiLayout()
+        {
+            Place("StartMenu", MenuPosition, Quaternion.identity);
+            Place("Subtitles", SubtitlePosition, Quaternion.Euler(20f, 0f, 0f));
+            Place("VoicePrompt", VoicePromptPosition, VoicePromptRotation);
+            SaveScene();
+            Debug.Log("[Itan] UI layout applied.");
+        }
+
+        static void Place(string name, Vector3 position, Quaternion rotation)
+        {
+            var go = GameObject.Find(name);
+            if (go == null)
+            {
+                // GameObject.Find skips inactive objects, so look through all canvases too.
+                foreach (var c in Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                    if (c.name == name) { go = c.gameObject; break; }
+            }
+            if (go != null) go.transform.SetPositionAndRotation(position, rotation);
+        }
+
         static void SaveScene()
         {
             var scene = EditorSceneManager.GetActiveScene();

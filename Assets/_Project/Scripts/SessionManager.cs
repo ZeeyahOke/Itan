@@ -1,4 +1,6 @@
+using Itan.Narration;
 using Itan.Player;
+using Itan.Story;
 using Itan.Session.States;
 using Itan.UI;
 using UnityEngine;
@@ -17,10 +19,14 @@ namespace Itan.Session
     {
         [SerializeField] StartMenuUI startMenu;
         [SerializeField] SeatRecenter seat;
+        [SerializeField] NarrationManager narration;
+        [SerializeField] OpeningScript opening;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
         public SeatRecenter Seat => seat;
+        public NarrationManager Narration => narration;
+        public OpeningScript Opening => opening;
 
         void Start()
         {

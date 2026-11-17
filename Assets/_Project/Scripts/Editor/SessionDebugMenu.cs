@@ -31,5 +31,16 @@ namespace Itan.EditorTools
 
         [MenuItem("Itan/Debug/Press Begin Button", true)]
         static bool CanPressBegin() => Application.isPlaying;
+
+        [MenuItem("Itan/Debug/Play Test Narration")]
+        static void PlayTestLine()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session != null && session.Narration != null && session.Opening != null)
+                session.Narration.Play(session.Opening.welcome, () => Debug.Log("[Narration] Test line finished."));
+        }
+
+        [MenuItem("Itan/Debug/Play Test Narration", true)]
+        static bool CanPlayTestLine() => Application.isPlaying;
     }
 }

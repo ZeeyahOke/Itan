@@ -39,6 +39,25 @@ namespace Itan.EditorTools
             Debug.Log("[Itan] Slice data ready in " + DataFolder);
         }
 
+        [MenuItem("Itan/Build/Create Opening Data")]
+        public static void BuildOpening()
+        {
+            string path = DataFolder + "/Opening.asset";
+            if (AssetDatabase.LoadAssetAtPath<OpeningScript>(path) != null) { Debug.Log("[Itan] Opening data already exists."); return; }
+
+            var opening = ScriptableObject.CreateInstance<OpeningScript>();
+            opening.welcome = Line("PH_Welcome", "Welcome, my child. Come, sit by the fire with us.");
+            opening.bowPrompt = Line("PH_BowPrompt", "Before a story is told, we greet our elders. Bow your head to greet me.");
+            opening.calabashPrompt = Line("PH_CalabashPrompt", "Good. Now take this calabash. It will hold the words you learn tonight.");
+            opening.call = Line("PH_Call", "Àlọ́ o!   (Answer: Ààlọ̀!)");
+            AssetDatabase.CreateAsset(opening, path);
+            AssetDatabase.SaveAssets();
+            Debug.Log("[Itan] Opening data created at " + path);
+        }
+
+        static NarrationLine Line(string clip, string subtitle) =>
+            new NarrationLine { clip = LoadClip(clip), subtitle = subtitle };
+
         static WordCard CreateWord(string fileName, string word, string meaning, string pronunciation, string clipName)
         {
             string path = DataFolder + "/" + fileName + ".asset";

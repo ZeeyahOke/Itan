@@ -1,4 +1,6 @@
+using Itan.Narration;
 using Itan.Player;
+using Itan.Story;
 using Itan.Session;
 using Itan.UI;
 using TMPro;
@@ -148,6 +150,78 @@ namespace Itan.EditorTools
 
             SaveScene();
             Debug.Log("[Itan] Seat recenter added.");
+        }
+
+        // The elder sits on the stool across the fire; his voice comes from head height.
+        static readonly Vector3 ElderHeadOffset = new Vector3(0f, 1.05f, 0.05f);
+        // Subtitles sit low, between the player and the fire, tilted up toward the eyes.
+        static readonly Vector3 SubtitlePosition = new Vector3(0f, 0.82f, 1.35f);
+
+        [MenuItem("Itan/Scene/Add Narration")]
+        public static void AddNarration()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (Object.FindFirstObjectByType<NarrationManager>() != null) { Debug.Log("[Itan] Narration already added."); return; }
+
+            // Elder root on his stool, with a spatial voice source at head height.
+            var elderSpot = GameObject.Find("ElderSpot");
+            var elder = new GameObject("Elder").transform;
+            if (elderSpot != null) elder.SetPositionAndRotation(elderSpot.transform.position, elderSpot.transform.rotation);
+
+            var voiceGo = new GameObject("Voice");
+            voiceGo.transform.SetParent(elder, false);
+            voiceGo.transform.localPosition = ElderHeadOffset;
+            var voice = voiceGo.AddComponent<AudioSource>();
+            voice.playOnAwake = false;
+            voice.spatialBlend = 1f;                       // fully 3D
+            voice.rolloffMode = AudioRolloffMode.Logarithmic;
+            voice.minDistance = 1.5f;                      // full volume at the player's seat (~3.4 m away is still clear)
+            voice.maxDistance = 20f;
+            voice.dopplerLevel = 0f;
+
+            // Subtitle panel.
+            var canvasGo = new GameObject("Subtitles", typeof(RectTransform));
+            var canvas = canvasGo.AddComponent<Canvas>();
+            canvas.renderMode = RenderMode.WorldSpace;
+            canvasGo.AddComponent<CanvasScaler>().dynamicPixelsPerUnit = 2f;
+            var rect = (RectTransform)canvasGo.transform;
+            rect.sizeDelta = new Vector2(1100f, 180f);
+            rect.SetPositionAndRotation(SubtitlePosition, Quaternion.Euler(20f, 0f, 0f));
+            rect.localScale = Vector3.one * PixelsToMetres;
+
+            var panelGo = new GameObject("Panel", typeof(RectTransform));
+            var panelRect = (RectTransform)panelGo.transform;
+            panelRect.SetParent(rect, false);
+            panelRect.anchorMin = Vector2.zero;
+            panelRect.anchorMax = Vector2.one;
+            panelRect.offsetMin = panelRect.offsetMax = Vector2.zero;
+            var bg = panelGo.AddComponent<Image>();
+            bg.color = new Color(0.04f, 0.04f, 0.1f, 0.78f);
+            bg.raycastTarget = false;
+            AddText(panelRect, "Text", "", 44, FontStyles.Normal, new Color(0.96f, 0.94f, 0.88f), Vector2.zero, new Vector2(1040f, 160f));
+
+            var subtitles = canvasGo.AddComponent<SubtitlePanel>();
+            var subSo = new SerializedObject(subtitles);
+            subSo.FindProperty("panel").objectReferenceValue = panelGo;
+            subSo.FindProperty("text").objectReferenceValue = panelRect.Find("Text").GetComponent<TextMeshProUGUI>();
+            subSo.ApplyModifiedPropertiesWithoutUndo();
+
+            // Narration manager.
+            var narration = new GameObject("Narration").AddComponent<NarrationManager>();
+            var narSo = new SerializedObject(narration);
+            narSo.FindProperty("voice").objectReferenceValue = voice;
+            narSo.FindProperty("subtitles").objectReferenceValue = subtitles;
+            narSo.ApplyModifiedPropertiesWithoutUndo();
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("narration").objectReferenceValue = narration;
+            sessionSo.FindProperty("opening").objectReferenceValue =
+                AssetDatabase.LoadAssetAtPath<OpeningScript>("Assets/_Project/Data/Opening.asset");
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Narration, elder voice and subtitles added.");
         }
 
         static void SaveScene()

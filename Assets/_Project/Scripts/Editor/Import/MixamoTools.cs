@@ -12,7 +12,7 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Characters/Reimport Mixamo")]
         public static void Reimport()
         {
-            foreach (var guid in AssetDatabase.FindAssets("t:Model", new[] { "Assets/_ThirdParty/Mixamo" }))
+            foreach (var guid in AssetDatabase.FindAssets("t:Model", new[] { "Assets/_ThirdParty/Mixamo", "Assets/_ThirdParty/PolygonalMind" }))
             {
                 var p = AssetDatabase.GUIDToAssetPath(guid);
                 var m = (ModelImporter)AssetImporter.GetAtPath(p);
@@ -33,6 +33,32 @@ namespace Itan.EditorTools
             }
             AssetDatabase.Refresh();
             Reimport();
+        }
+
+        /// <summary>
+        /// Many Quaternius FBX files carry their textures inside the file. Pull them out next
+        /// to each model so Unity's materials pick them up (otherwise they render white).
+        /// </summary>
+        [MenuItem("Itan/Assets/Extract Embedded Textures")]
+        public static void ExtractEmbedded()
+        {
+            int n = 0;
+            AssetDatabase.StartAssetEditing();
+            try
+            {
+                foreach (var guid in AssetDatabase.FindAssets("t:Model", new[] { "Assets/_ThirdParty/Quaternius" }))
+                {
+                    var p = AssetDatabase.GUIDToAssetPath(guid);
+                    var dir = Path.GetDirectoryName(p).Replace('\\', '/');
+                    if (new FileInfo(p).Length < 150 * 1024) continue; // small files have no embedded images
+                    if (((ModelImporter)AssetImporter.GetAtPath(p)).ExtractTextures(dir)) n++;
+                }
+            }
+            finally { AssetDatabase.StopAssetEditing(); }
+            AssetDatabase.Refresh();
+            foreach (var guid in AssetDatabase.FindAssets("t:Model", new[] { "Assets/_ThirdParty/Quaternius" }))
+                AssetDatabase.ImportAsset(AssetDatabase.GUIDToAssetPath(guid), ImportAssetOptions.ForceUpdate);
+            Debug.Log("[Itan] Extracted embedded textures from " + n + " models.");
         }
 
         /// <summary>Renders each character model to Logs/char_NAME.png so they can be checked without the editor.</summary>

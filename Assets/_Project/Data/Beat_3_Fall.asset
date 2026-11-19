@@ -16,8 +16,7 @@ MonoBehaviour:
   title: "\xCCj\xE0p\xE1 Falls"
   narration:
   - clip: {fileID: 8300000, guid: a9c16a53549b843358a4975527e56c25, type: 3}
-    subtitle: "\xCCj\xE0p\xE1 copied the song, and the rope came down for him too."
+    subtitle: "Ìjàpá the tortoise was jealous. He copied the song, and the rope came down for him too."
   - clip: {fileID: 8300000, guid: 34a603179b95d4158998b5609b93d718, type: 3}
-    subtitle: "Halfway up, the rope was cut. \xCCj\xE0p\xE1 fell, and his shell cracked
-      into pieces."
+    subtitle: "But halfway up, the rope was cut. Ìjàpá fell to the ground, and his shell cracked into pieces."
   wordCard: {fileID: 11400000, guid: b013edc6c7a9d438ea9af38c26095077, type: 2}

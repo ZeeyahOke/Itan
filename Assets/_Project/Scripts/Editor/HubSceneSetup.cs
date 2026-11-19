@@ -417,6 +417,33 @@ namespace Itan.EditorTools
             if (go != null) go.transform.SetPositionAndRotation(position, rotation);
         }
 
+        [MenuItem("Itan/Scene/Add Story Manager")]
+        public static void AddStoryManager()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            var narration = Object.FindFirstObjectByType<NarrationManager>();
+            if (session == null || narration == null) { Debug.LogError("[Itan] Need a SessionManager and Narration."); return; }
+            if (Object.FindFirstObjectByType<StoryManager>() != null) { Debug.Log("[Itan] Story manager already added."); return; }
+
+            var story = new GameObject("Story").AddComponent<StoryManager>();
+            var so = new SerializedObject(story);
+            so.FindProperty("narration").objectReferenceValue = narration;
+            var beats = so.FindProperty("beats");
+            var paths = new[] { "Beat_1_Famine", "Beat_2_Rope", "Beat_3_Fall" };
+            beats.arraySize = paths.Length;
+            for (int i = 0; i < paths.Length; i++)
+                beats.GetArrayElementAtIndex(i).objectReferenceValue =
+                    AssetDatabase.LoadAssetAtPath<StoryBeat>("Assets/_Project/Data/" + paths[i] + ".asset");
+            so.ApplyModifiedPropertiesWithoutUndo();
+
+            var sessionSo = new SerializedObject(session);
+            sessionSo.FindProperty("story").objectReferenceValue = story;
+            sessionSo.ApplyModifiedPropertiesWithoutUndo();
+
+            SaveScene();
+            Debug.Log("[Itan] Story manager added with 3 beats.");
+        }
+
         static void SaveScene()
         {
             var scene = EditorSceneManager.GetActiveScene();

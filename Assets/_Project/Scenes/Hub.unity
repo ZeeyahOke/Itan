@@ -9928,6 +9928,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567124662}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &573560190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 573560192}
+  - component: {fileID: 573560191}
+  m_Layer: 0
+  m_Name: Story
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &573560191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573560190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ffa8b5c7034eb88b8df7f084ef59dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Itan.Story.StoryManager
+  narration: {fileID: 18762073}
+  beats:
+  - {fileID: 11400000, guid: 8e39c18f78fe04bd3a9177617877d553, type: 2}
+  - {fileID: 11400000, guid: abb09afe4244049208db3e58330db47f, type: 2}
+  - {fileID: 11400000, guid: b25ac959df6cd47fabbd1e79e0014c09, type: 2}
+--- !u!4 &573560192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573560190}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &576794528
 GameObject:
   m_ObjectHideFlags: 0
@@ -13837,6 +13886,7 @@ MonoBehaviour:
   calabash: {fileID: 600400937}
   voice: {fileID: 13150409}
   transition: {fileID: 1400298728}
+  story: {fileID: 573560191}
 --- !u!4 &1031643428
 Transform:
   m_ObjectHideFlags: 0
@@ -23988,3 +24038,4 @@ SceneRoots:
   - {fileID: 1228436838}
   - {fileID: 339612879}
   - {fileID: 1400298729}
+  - {fileID: 573560192}

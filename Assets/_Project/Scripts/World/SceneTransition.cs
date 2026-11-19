@@ -59,6 +59,15 @@ namespace Itan.World
             onDone?.Invoke();
         }
 
+        /// <summary>Stop a transition part-way (used when a step is skipped) and clear the fade.</summary>
+        public void Cancel()
+        {
+            StopAllCoroutines();
+            smoke.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            SetFade(0f);
+            IsPlaying = false;
+        }
+
         /// <summary>Show one world and hide the other, straight away.</summary>
         public void ShowWorld(bool story)
         {

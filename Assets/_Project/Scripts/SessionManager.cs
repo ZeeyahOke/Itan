@@ -29,6 +29,7 @@ namespace Itan.Session
         [SerializeField] Calabash calabash;
         [SerializeField] MicResponseDetector voice;
         [SerializeField] SceneTransition transition;
+        [SerializeField] StoryManager story;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -39,6 +40,7 @@ namespace Itan.Session
         public Calabash Calabash => calabash;
         public MicResponseDetector Voice => voice;
         public SceneTransition Transition => transition;
+        public StoryManager Story => story;
 
         void Start()
         {

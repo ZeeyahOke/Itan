@@ -16,8 +16,7 @@ MonoBehaviour:
   title: The Famine
   narration:
   - clip: {fileID: 8300000, guid: f3fdb36aa88284bc1bd8f644f90f5ad8, type: 3}
-    subtitle: Long ago, a great famine came to the land. Every pot was empty.
+    subtitle: "Long ago, a great famine came to the land. Every pot was empty and every field was dry."
   - clip: {fileID: 8300000, guid: fda82eb5781d04c2caa072b37e83846f, type: 3}
-    subtitle: "But Aj\xE1, the dog, never looked hungry. \xCCj\xE0p\xE1, the tortoise,
-      wanted to know why."
+    subtitle: "But Ajá the dog never looked hungry. Each night he sang a secret song, and a rope came down from the sky."
   wordCard: {fileID: 11400000, guid: b6ea64a380cb541f7a788caa28c9bdde, type: 2}

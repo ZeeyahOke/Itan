@@ -30,6 +30,7 @@ namespace Itan.Session
         [SerializeField] MicResponseDetector voice;
         [SerializeField] SceneTransition transition;
         [SerializeField] StoryManager story;
+        [SerializeField] StatusUI status;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -41,6 +42,7 @@ namespace Itan.Session
         public MicResponseDetector Voice => voice;
         public SceneTransition Transition => transition;
         public StoryManager Story => story;
+        public StatusUI Status => status;
 
         void Start()
         {

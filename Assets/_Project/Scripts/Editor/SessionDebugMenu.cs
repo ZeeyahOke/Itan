@@ -53,6 +53,20 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Debug/Transition/Smoke To Fire", true)]
         static bool CanTransition() => Application.isPlaying;
 
+        // Without a headset the editor camera can't look around; tilt it to check the lap.
+        [MenuItem("Itan/Debug/Look At Lap (toggle)")]
+        static void LookAtLap()
+        {
+            var origin = Object.FindFirstObjectByType<Unity.XR.CoreUtils.XROrigin>();
+            if (origin == null) return;
+            var offset = origin.CameraFloorOffsetObject.transform;
+            bool down = offset.localEulerAngles.x < 1f;
+            offset.localRotation = Quaternion.Euler(down ? 50f : 0f, 0f, 0f);
+        }
+
+        [MenuItem("Itan/Debug/Look At Lap (toggle)", true)]
+        static bool CanLookAtLap() => Application.isPlaying;
+
         [MenuItem("Itan/Debug/Simulate Bow")]
         static void SimulateBow() => Object.FindFirstObjectByType<Itan.Detection.GreetingDetector>()?.SimulateBow();
 

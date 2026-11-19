@@ -6,6 +6,7 @@ using Itan.Story;
 using Itan.Session.States;
 using Itan.UI;
 using Itan.Voice;
+using Itan.World;
 using UnityEngine;
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
 using UnityEngine.InputSystem;
@@ -27,6 +28,7 @@ namespace Itan.Session
         [SerializeField] GreetingDetector greeting;
         [SerializeField] Calabash calabash;
         [SerializeField] MicResponseDetector voice;
+        [SerializeField] SceneTransition transition;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -36,6 +38,7 @@ namespace Itan.Session
         public GreetingDetector Greeting => greeting;
         public Calabash Calabash => calabash;
         public MicResponseDetector Voice => voice;
+        public SceneTransition Transition => transition;
 
         void Start()
         {

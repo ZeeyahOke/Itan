@@ -43,6 +43,16 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Debug/Play Test Narration", true)]
         static bool CanPlayTestLine() => Application.isPlaying;
 
+        [MenuItem("Itan/Debug/Transition/Smoke To Story")]
+        static void ToStory() => Object.FindFirstObjectByType<Itan.World.SceneTransition>()?.SmokeToStory();
+
+        [MenuItem("Itan/Debug/Transition/Smoke To Fire")]
+        static void ToFire() => Object.FindFirstObjectByType<Itan.World.SceneTransition>()?.SmokeToFire();
+
+        [MenuItem("Itan/Debug/Transition/Smoke To Story", true)]
+        [MenuItem("Itan/Debug/Transition/Smoke To Fire", true)]
+        static bool CanTransition() => Application.isPlaying;
+
         [MenuItem("Itan/Debug/Simulate Bow")]
         static void SimulateBow() => Object.FindFirstObjectByType<Itan.Detection.GreetingDetector>()?.SimulateBow();
 

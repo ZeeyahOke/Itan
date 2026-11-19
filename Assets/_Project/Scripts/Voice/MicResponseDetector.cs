@@ -38,10 +38,15 @@ namespace Itan.Voice
 
         public float CurrentVolume { get; private set; }
 
+        /// <summary>How many listening tries the last answer took (misses + the try that worked).</summary>
+        public int LastTries { get; private set; }
+        /// <summary>True if the last answer came from the fallback button rather than the voice.</summary>
+        public bool LastAnsweredByButton { get; private set; }
+
         void Awake()
         {
             check = new VoiceCheck(volumeThreshold, listenSeconds, minLoudSeconds, maxTries);
-            fallbackButton.onClick.AddListener(Answer);
+            fallbackButton.onClick.AddListener(() => Answer(true));
             HideUi();
         }
 
@@ -87,7 +92,7 @@ namespace Itan.Voice
             if (check.Heard)
             {
                 Debug.Log("[Voice] Heard an answer");
-                Answer();
+                Answer(false);
             }
             else if (check.NeedsFallback)
             {
@@ -101,8 +106,10 @@ namespace Itan.Voice
             }
         }
 
-        void Answer()
+        void Answer(bool byButton)
         {
+            LastAnsweredByButton = byButton;
+            LastTries = check.Misses + (byButton ? 0 : 1);
             var callback = onAnswered;
             onAnswered = null;
             check.Reset();
@@ -159,7 +166,7 @@ namespace Itan.Voice
 
         public void SimulateVoice()
         {
-            if (check.IsListening) { listeningCue.SetActive(false); Answer(); }
+            if (check.IsListening) { listeningCue.SetActive(false); Answer(false); }
         }
 
         public void SimulateSilence()

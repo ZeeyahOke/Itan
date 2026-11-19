@@ -15,6 +15,7 @@ namespace Itan.Story
     {
         [SerializeField] NarrationManager narration;
         [SerializeField] List<StoryBeat> beats = new List<StoryBeat>();
+        [SerializeField] WordCardMoment wordMoment;
 
         /// <summary>A new beat is starting. Arguments: the beat and its 0-based index.</summary>
         public event Action<StoryBeat, int> BeatStarted;
@@ -40,6 +41,7 @@ namespace Itan.Story
             if (running != null) StopCoroutine(running);
             running = null;
             narration.Stop();
+            if (wordMoment != null) wordMoment.Cancel();
         }
 
         IEnumerator Run(Action onDone)
@@ -51,6 +53,9 @@ namespace Itan.Story
                 BeatStarted?.Invoke(beat, i);
 
                 yield return Narrate(beat.narration);
+
+                if (wordMoment != null && beat.wordCard != null)
+                    yield return wordMoment.Play(beat.wordCard);
             }
 
             running = null;

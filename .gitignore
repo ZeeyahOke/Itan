@@ -120,4 +120,8 @@ InitTestScene*.unity*
 # Unity Asset Store packs: their licence doesn't allow redistribution in a
 # public repo. Import them locally, add their folder here, and list them in
 # CREDITS.md.
-/[Aa]ssets/_ThirdParty/
+# Third-party assets stay out of git (see Assets/_Project/ThirdPartyAssets.txt), but their
+# .meta files are kept so re-downloaded assets get the same GUIDs and scene links survive.
+/[Aa]ssets/_ThirdParty/**
+!/[Aa]ssets/_ThirdParty/**/
+!/[Aa]ssets/_ThirdParty/**/*.meta

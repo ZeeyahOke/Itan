@@ -14730,6 +14730,7 @@ GameObject:
   - component: {fileID: 1031643428}
   - component: {fileID: 1031643427}
   - component: {fileID: 1031643429}
+  - component: {fileID: 1031643430}
   m_Layer: 0
   m_Name: SessionManager
   m_TagString: Untagged
@@ -14786,6 +14787,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69e4842a89f94794909d882df10e3568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Itan.Voice.MicPermission
+--- !u!114 &1031643430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031643426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97335c3d9964b9aabef4dd22420e181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Itan.Interaction.ControllerHaptics
+  wordMoment: {fileID: 1476824616}
+  tapAmplitude: 0.35
+  tapSeconds: 0.06
+  collectAmplitude: 0.7
+  collectSeconds: 0.18
 --- !u!1 &1042319964
 GameObject:
   m_ObjectHideFlags: 0

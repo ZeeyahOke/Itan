@@ -444,6 +444,20 @@ namespace Itan.EditorTools
             Debug.Log("[Itan] Story manager added with 3 beats.");
         }
 
+        [MenuItem("Itan/Scene/Add Controller Haptics")]
+        public static void AddHaptics()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (session.GetComponent<ControllerHaptics>() != null) { Debug.Log("[Itan] Haptics already added."); return; }
+            var haptics = session.gameObject.AddComponent<ControllerHaptics>();
+            var so = new SerializedObject(haptics);
+            so.FindProperty("wordMoment").objectReferenceValue = Object.FindFirstObjectByType<WordCardMoment>();
+            so.ApplyModifiedPropertiesWithoutUndo();
+            SaveScene();
+            Debug.Log("[Itan] Controller haptics added.");
+        }
+
         static void SaveScene()
         {
             var scene = EditorSceneManager.GetActiveScene();

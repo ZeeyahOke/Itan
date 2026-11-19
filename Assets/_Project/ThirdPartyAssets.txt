@@ -1,0 +1,31 @@
+# Third-party assets fetched by Itan > Assets > Download Third-Party Assets (kept out of git).
+# url<TAB>target<TAB>licence<TAB>author<TAB>title
+https://raw.githubusercontent.com/polygonalmind/100avatars/HEAD/100Avatars_035/100Avatars_035_Wolfman.fbx	Assets/_ThirdParty/PolygonalMind/Wolfman/Wolfman.fbx	CC-BY 4.0	Polygonal Mind (100 Avatars)	Wolfman avatar (base for Ajá and his mother)
+https://raw.githubusercontent.com/polygonalmind/100avatars/HEAD/100Avatars_035/100Avatars_035_Wolfman.png	Assets/_ThirdParty/PolygonalMind/Wolfman/Wolfman.png	CC-BY 4.0	Polygonal Mind (100 Avatars)	Wolfman texture
+https://raw.githubusercontent.com/polygonalmind/100avatars/HEAD/100Avatars_182/100Avatars_182_CoolTurtle.fbx	Assets/_ThirdParty/PolygonalMind/CoolTurtle/CoolTurtle.fbx	CC-BY 4.0	Polygonal Mind (100 Avatars)	Cool Turtle avatar (Ìjàpá)
+https://raw.githubusercontent.com/polygonalmind/100avatars/HEAD/100Avatars_182/100Avatars_182_CoolTurtle.png	Assets/_ThirdParty/PolygonalMind/CoolTurtle/CoolTurtle.png	CC-BY 4.0	Polygonal Mind (100 Avatars)	Cool Turtle texture
+https://static.poly.pizza/list/T34GZFA0fm-zip-1536447924.zip	Assets/_ThirdParty/Quaternius/StylizedNatureMegaKit/	CC0	Quaternius	Stylized Nature MegaKit
+https://static.poly.pizza/list/zyIyYd9yGr-zip-923486109.zip	Assets/_ThirdParty/Quaternius/UltimateStylizedNature/	CC0	Quaternius	Ultimate Stylized Nature Pack
+https://static.poly.pizza/list/h3WC1gyRb4-zip--1233410413.zip	Assets/_ThirdParty/Quaternius/UltimateFood/	CC0	Quaternius	Ultimate Food Pack
+https://static.poly.pizza/list/XzvQPP0yWB-zip--418536483.zip	Assets/_ThirdParty/Quaternius/Survival/	CC0	Quaternius	Survival Pack
+https://static.poly.pizza/list/pgvx8Zkq8v-zip--1264758383.zip	Assets/_ThirdParty/Quaternius/Furniture/	CC0	Quaternius	Furniture Pack
+https://static.poly.pizza/list/NsHhjhlrfY-zip-720889306.zip	Assets/_ThirdParty/Quaternius/MedievalVillage/	CC0	Quaternius	Medieval Village Pack
+# Poly Haven textures (CC0)
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_laterite_soil_stones/red_laterite_soil_stones_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/red_laterite_soil_stones/red_laterite_soil_stones_diff.jpg	CC0	Poly Haven	red_laterite_soil_stones colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_laterite_soil_stones/red_laterite_soil_stones_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/red_laterite_soil_stones/red_laterite_soil_stones_nor.jpg	CC0	Poly Haven	red_laterite_soil_stones normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/mud_cracked_dry_03/mud_cracked_dry_03_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/mud_cracked_dry_03/mud_cracked_dry_03_diff.jpg	CC0	Poly Haven	mud_cracked_dry_03 colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/mud_cracked_dry_03/mud_cracked_dry_03_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/mud_cracked_dry_03/mud_cracked_dry_03_nor.jpg	CC0	Poly Haven	mud_cracked_dry_03 normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dry_mud_field_001/dry_mud_field_001_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/dry_mud_field_001/dry_mud_field_001_diff.jpg	CC0	Poly Haven	dry_mud_field_001 colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/dry_mud_field_001/dry_mud_field_001_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/dry_mud_field_001/dry_mud_field_001_nor.jpg	CC0	Poly Haven	dry_mud_field_001 normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/clay_plaster/clay_plaster_diff.jpg	CC0	Poly Haven	clay_plaster colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/clay_plaster/clay_plaster_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/clay_plaster/clay_plaster_nor.jpg	CC0	Poly Haven	clay_plaster normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/patterned_clay_wall/patterned_clay_wall_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/patterned_clay_wall/patterned_clay_wall_diff.jpg	CC0	Poly Haven	patterned_clay_wall colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/patterned_clay_wall/patterned_clay_wall_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/patterned_clay_wall/patterned_clay_wall_nor.jpg	CC0	Poly Haven	patterned_clay_wall normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/thatch_roof_angled/thatch_roof_angled_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/thatch_roof_angled/thatch_roof_angled_diff.jpg	CC0	Poly Haven	thatch_roof_angled colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/thatch_roof_angled/thatch_roof_angled_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/thatch_roof_angled/thatch_roof_angled_nor.jpg	CC0	Poly Haven	thatch_roof_angled normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_dirt_mud_01/red_dirt_mud_01_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/red_dirt_mud_01/red_dirt_mud_01_diff.jpg	CC0	Poly Haven	red_dirt_mud_01 colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/red_dirt_mud_01/red_dirt_mud_01_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/red_dirt_mud_01/red_dirt_mud_01_nor.jpg	CC0	Poly Haven	red_dirt_mud_01 normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_dry/brown_mud_dry_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/brown_mud_dry/brown_mud_dry_diff.jpg	CC0	Poly Haven	brown_mud_dry colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_dry/brown_mud_dry_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/brown_mud_dry/brown_mud_dry_nor.jpg	CC0	Poly Haven	brown_mud_dry normal
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/palm_bark/palm_bark_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/palm_bark/palm_bark_diff.jpg	CC0	Poly Haven	palm_bark colour
+https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/palm_bark/palm_bark_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/palm_bark/palm_bark_nor.jpg	CC0	Poly Haven	palm_bark normal

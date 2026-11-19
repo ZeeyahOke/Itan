@@ -55,6 +55,22 @@ namespace Itan.EditorTools
             Debug.Log("[Itan] Opening data created at " + path);
         }
 
+        [MenuItem("Itan/Build/Create Closing Data")]
+        public static ClosingScript BuildClosing()
+        {
+            string path = DataFolder + "/Closing.asset";
+            var existing = AssetDatabase.LoadAssetAtPath<ClosingScript>(path);
+            if (existing != null) return existing;
+
+            var closing = ScriptableObject.CreateInstance<ClosingScript>();
+            closing.quizIntro = Line("PH_QuizIntro", "Now, let us see what is in your calabash. Listen, and choose the right card.");
+            closing.lesson = Line("PH_Lesson", "Remember Ìjàpá, my child. Greed and trickery may lift you up, but they will always let you fall.");
+            closing.farewell = Line("PH_Farewell", "You carry three new words home tonight. Ó dàbọ̀, go well.");
+            AssetDatabase.CreateAsset(closing, path);
+            AssetDatabase.SaveAssets();
+            return closing;
+        }
+
         static NarrationLine Line(string clip, string subtitle) =>
             new NarrationLine { clip = LoadClip(clip), subtitle = subtitle };
 

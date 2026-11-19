@@ -2,6 +2,10 @@ using UnityEngine;
 
 namespace Itan.Session.States
 {
+    /// <summary>
+    /// Back at the fire, the elder checks what the visitor remembers with a
+    /// three-round card quiz, then the session moves on to the summary.
+    /// </summary>
     public class QuizState : ISessionState
     {
         readonly SessionManager session;
@@ -11,9 +15,15 @@ namespace Itan.Session.States
             this.session = session;
         }
 
+        bool IsCurrent => session.CurrentState == this;
+
         public void Enter()
         {
             Debug.Log("[Session] Enter QuizState");
+            session.Narration.Play(session.Closing.quizIntro, () =>
+            {
+                if (IsCurrent) session.Quiz.Run(OnQuizDone);
+            });
         }
 
         public void Tick() { }
@@ -21,9 +31,21 @@ namespace Itan.Session.States
         public void Exit()
         {
             Debug.Log("[Session] Exit QuizState");
+            session.Quiz.Stop();
+            session.Narration.Stop();
         }
 
-        public void Skip()
+        public void Skip() => GoToSummary();
+
+        void OnQuizDone(int score, int total)
+        {
+            session.Results.QuizScore = score;
+            session.Results.QuizTotal = total;
+            Debug.Log("[Quiz] Finished: " + score + " of " + total);
+            GoToSummary();
+        }
+
+        void GoToSummary()
         {
             session.ChangeState(new SummaryState(session));
         }

@@ -2,6 +2,7 @@ using Itan.Detection;
 using Itan.Interaction;
 using Itan.Narration;
 using Itan.Player;
+using Itan.Quiz;
 using Itan.Story;
 using Itan.Session.States;
 using Itan.UI;
@@ -31,6 +32,8 @@ namespace Itan.Session
         [SerializeField] SceneTransition transition;
         [SerializeField] StoryManager story;
         [SerializeField] StatusUI status;
+        [SerializeField] CardQuiz quiz;
+        [SerializeField] ClosingScript closing;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -43,6 +46,11 @@ namespace Itan.Session
         public SceneTransition Transition => transition;
         public StoryManager Story => story;
         public StatusUI Status => status;
+        public CardQuiz Quiz => quiz;
+        public ClosingScript Closing => closing;
+
+        /// <summary>What happened this visit (quiz score, and more later). Fresh for every visitor.</summary>
+        public SessionResults Results { get; private set; } = new SessionResults();
 
         void Start()
         {

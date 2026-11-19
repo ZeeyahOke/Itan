@@ -107,6 +107,16 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Debug/Voice/Press Fallback Button")]
         static void PressFallback() => Voice?.PressFallback();
 
+        const string AutoAnswerPath = "Itan/Debug/Voice/Auto-Answer (toggle)";
+
+        [MenuItem(AutoAnswerPath)]
+        static void ToggleAutoAnswer()
+        {
+            Itan.Voice.MicResponseDetector.DebugAutoAnswer = !Itan.Voice.MicResponseDetector.DebugAutoAnswer;
+            Menu.SetChecked(AutoAnswerPath, Itan.Voice.MicResponseDetector.DebugAutoAnswer);
+            Debug.Log("[Debug] Voice auto-answer " + (Itan.Voice.MicResponseDetector.DebugAutoAnswer ? "ON" : "OFF"));
+        }
+
         [MenuItem("Itan/Debug/Voice/Start Test Listen", true)]
         [MenuItem("Itan/Debug/Voice/Simulate Voice", true)]
         [MenuItem("Itan/Debug/Voice/Simulate Silence", true)]

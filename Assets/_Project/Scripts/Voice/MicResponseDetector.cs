@@ -38,6 +38,11 @@ namespace Itan.Voice
 
         public float CurrentVolume { get; private set; }
 
+#if UNITY_EDITOR
+        /// <summary>Editor testing only: answer every voice check as soon as it starts listening.</summary>
+        public static bool DebugAutoAnswer;
+#endif
+
         /// <summary>How many listening tries the last answer took (misses + the try that worked).</summary>
         public int LastTries { get; private set; }
         /// <summary>True if the last answer came from the fallback button rather than the voice.</summary>
@@ -84,6 +89,9 @@ namespace Itan.Voice
         void Update()
         {
             if (!check.IsListening) return;
+#if UNITY_EDITOR
+            if (DebugAutoAnswer) { listeningCue.SetActive(false); Answer(false); return; }
+#endif
 
             CurrentVolume = ReadVolume();
             if (!check.Update(CurrentVolume, Time.deltaTime)) return;

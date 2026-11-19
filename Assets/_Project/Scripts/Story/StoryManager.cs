@@ -17,6 +17,9 @@ namespace Itan.Story
         [SerializeField] List<StoryBeat> beats = new List<StoryBeat>();
         [SerializeField] WordCardMoment wordMoment;
 
+        [Tooltip("One key moment per beat, in beat order. Each must implement IKeyMoment.")]
+        [SerializeField] MonoBehaviour[] keyMoments = new MonoBehaviour[0];
+
         /// <summary>A new beat is starting. Arguments: the beat and its 0-based index.</summary>
         public event Action<StoryBeat, int> BeatStarted;
 
@@ -54,6 +57,9 @@ namespace Itan.Story
 
                 yield return Narrate(beat.narration);
 
+                if (i < keyMoments.Length && keyMoments[i] is IKeyMoment moment)
+                    yield return moment.Play();
+
                 if (wordMoment != null && beat.wordCard != null)
                     yield return wordMoment.Play(beat.wordCard);
             }
@@ -61,6 +67,13 @@ namespace Itan.Story
             running = null;
             Debug.Log("[Story] All beats played");
             onDone?.Invoke();
+        }
+
+        /// <summary>Put the rope and characters back for the next visitor.</summary>
+        public void ResetMoments()
+        {
+            foreach (var m in keyMoments)
+                if (m is IKeyMoment moment) moment.ResetMoment();
         }
 
         IEnumerator Narrate(IList<NarrationLine> lines)

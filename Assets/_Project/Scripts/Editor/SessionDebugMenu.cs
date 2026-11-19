@@ -67,6 +67,31 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Debug/Look At Lap (toggle)", true)]
         static bool CanLookAtLap() => Application.isPlaying;
 
+        // Picks the first visible quiz card (index 0, 1 or 2 from the left).
+        static void PickCard(int index)
+        {
+            var cards = Object.FindObjectsByType<Itan.UI.QuizCard>(FindObjectsSortMode.None);
+            System.Array.Sort(cards, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+            if (index < cards.Length) cards[index].SimulatePick();
+        }
+
+        [MenuItem("Itan/Debug/Quiz/Pick Left Card")] static void PickLeft() => PickCard(0);
+        [MenuItem("Itan/Debug/Quiz/Pick Middle Card")] static void PickMiddle() => PickCard(1);
+        [MenuItem("Itan/Debug/Quiz/Pick Right Card")] static void PickRight() => PickCard(2);
+
+        [MenuItem("Itan/Debug/Quiz/Flash Test Card Right")]
+        static void FlashRight() => Object.FindFirstObjectByType<Itan.UI.QuizCard>()?.Flash(true);
+
+        [MenuItem("Itan/Debug/Quiz/Flash Test Card Wrong")]
+        static void FlashWrong() => Object.FindFirstObjectByType<Itan.UI.QuizCard>()?.Flash(false);
+
+        [MenuItem("Itan/Debug/Quiz/Pick Left Card", true)]
+        [MenuItem("Itan/Debug/Quiz/Pick Middle Card", true)]
+        [MenuItem("Itan/Debug/Quiz/Pick Right Card", true)]
+        [MenuItem("Itan/Debug/Quiz/Flash Test Card Right", true)]
+        [MenuItem("Itan/Debug/Quiz/Flash Test Card Wrong", true)]
+        static bool CanUseQuizDebug() => Application.isPlaying;
+
         [MenuItem("Itan/Debug/Simulate Bow")]
         static void SimulateBow() => Object.FindFirstObjectByType<Itan.Detection.GreetingDetector>()?.SimulateBow();
 

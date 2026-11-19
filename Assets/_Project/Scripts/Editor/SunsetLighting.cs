@@ -22,6 +22,18 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Scene/Apply Sunset Lighting")]
         public static void Apply()
         {
+            ApplyEnvironment();
+            ApplySceneObjects();
+            DynamicGI.UpdateEnvironment();
+            var scene = EditorSceneManager.GetActiveScene();
+            EditorSceneManager.MarkSceneDirty(scene);
+            EditorSceneManager.SaveScene(scene);
+            Debug.Log("[Itan] Sunset lighting applied.");
+        }
+
+        /// <summary>Sky, ambient light and fog. These are saved per scene, so the story scene gets them too.</summary>
+        public static void ApplyEnvironment()
+        {
             // Sky: custom indigo-to-orange gradient with a glow around the sun.
             var skyShader = Shader.Find("Itan/SunsetSky");
             var sky = AssetDatabase.LoadAssetAtPath<Material>(SkyPath);
@@ -29,6 +41,23 @@ namespace Itan.EditorTools
             else sky.shader = skyShader;
             RenderSettings.skybox = sky;
 
+            // Soft three-tone ambient so shadowed sides stay readable.
+            RenderSettings.ambientMode = AmbientMode.Trilight;
+            RenderSettings.ambientSkyColor = new Color(0.52f, 0.48f, 0.66f);
+            RenderSettings.ambientEquatorColor = new Color(0.62f, 0.44f, 0.36f);
+            RenderSettings.ambientGroundColor = new Color(0.2f, 0.15f, 0.12f);
+
+            // Warm haze in the distance.
+            RenderSettings.fog = true;
+            RenderSettings.fogMode = FogMode.Linear;
+            RenderSettings.fogColor = new Color(0.86f, 0.56f, 0.42f);
+            RenderSettings.fogStartDistance = 14f;
+            RenderSettings.fogEndDistance = 70f;
+        }
+
+        // The hub's sun, moon, fire and camera.
+        static void ApplySceneObjects()
+        {
             // Sun: the old moonlight becomes the setting sun.
             var sunGo = GameObject.Find("Moonlight") ?? GameObject.Find("Sun");
             var sun = sunGo.GetComponent<Light>();
@@ -43,19 +72,6 @@ namespace Itan.EditorTools
             // The sky draws the sun where the light comes from.
             Shader.SetGlobalVector("_ItanSunDirection", -sunGo.transform.forward);
             if (sunGo.GetComponent<Itan.World.SkySun>() == null) sunGo.AddComponent<Itan.World.SkySun>();
-
-            // Soft three-tone ambient so shadowed sides stay readable.
-            RenderSettings.ambientMode = AmbientMode.Trilight;
-            RenderSettings.ambientSkyColor = new Color(0.52f, 0.48f, 0.66f);
-            RenderSettings.ambientEquatorColor = new Color(0.62f, 0.44f, 0.36f);
-            RenderSettings.ambientGroundColor = new Color(0.2f, 0.15f, 0.12f);
-
-            // Warm haze in the distance.
-            RenderSettings.fog = true;
-            RenderSettings.fogMode = FogMode.Linear;
-            RenderSettings.fogColor = new Color(0.86f, 0.56f, 0.42f);
-            RenderSettings.fogStartDistance = 14f;
-            RenderSettings.fogEndDistance = 70f;
 
             // The camera now shows the sky instead of a flat colour.
             var origin = Object.FindFirstObjectByType<XROrigin>();
@@ -84,12 +100,6 @@ namespace Itan.EditorTools
                 l.intensity = 2.2f;
                 l.range = 7f;
             }
-
-            DynamicGI.UpdateEnvironment();
-            var scene = EditorSceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("[Itan] Sunset lighting applied.");
         }
     }
 }

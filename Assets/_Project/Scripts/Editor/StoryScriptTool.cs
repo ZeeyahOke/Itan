@@ -117,7 +117,8 @@ namespace Itan.EditorTools
 
         static void WireSceneAudio()
         {
-            // Songs: from Ajá and Ìjàpá themselves.
+            // Songs: from Ajá and Ìjàpá themselves (they live in the StoryWorld scene).
+            StoryScenes.OpenStory();
             var aja = Find("Aja");
             var ijapa = Find("Ijapa");
             var ropeMoment = Object.FindFirstObjectByType<RopeDropMoment>(FindObjectsInactive.Include);
@@ -178,9 +179,7 @@ namespace Itan.EditorTools
             fire.volume = 0.55f;
             fire.dopplerLevel = 0f;
 
-            var scene = EditorSceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
+            StoryScenes.SaveAll();
         }
 
         static AudioSource Voice3D(GameObject who, float height)
@@ -271,11 +270,6 @@ namespace Itan.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static GameObject Find(string name)
-        {
-            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                if (t.name == name) return t.gameObject;
-            return null;
-        }
+        static GameObject Find(string name) => StoryScenes.Find(name);
     }
 }

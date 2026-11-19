@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Itan.World
 {
@@ -8,12 +9,16 @@ namespace Itan.World
     /// Moves the visit between the fireside hub and the story world with
     /// rising smoke and a fade. The camera never moves: we fade out, swap
     /// which world is shown, and fade back in.
+    /// The story world is its own scene. It is loaded additively in the
+    /// background when the hub starts, kept hidden, and made the active scene
+    /// while it is shown so its own sky, ambient light and fog apply.
     /// </summary>
     public class SceneTransition : MonoBehaviour
     {
         [Tooltip("Everything that belongs to the fireside and is hidden during the story.")]
         [SerializeField] GameObject[] hubObjects;
-        [SerializeField] GameObject storyWorld;
+        [Tooltip("Name of the story world scene (must be in the build settings).")]
+        [SerializeField] string storyScene = "StoryWorld";
         [SerializeField] ParticleSystem smoke;
         [Tooltip("Talking drum that announces each journey through the smoke.")]
         [SerializeField] AudioSource drum;
@@ -32,12 +37,30 @@ namespace Itan.World
         public bool IsPlaying { get; private set; }
 
         MaterialPropertyBlock block;
+        Scene hubScene;
+
+        /// <summary>True once the story world scene has loaded and can be shown.</summary>
+        public bool StoryReady => StoryWorldRoot.Current != null;
 
         void Awake()
         {
             block = new MaterialPropertyBlock();
+            hubScene = gameObject.scene;
             FitFadeQuadToCamera();
             SetFade(0f);
+        }
+
+        void Start() => StartCoroutine(LoadStoryWorld());
+
+        // Load the story scene alongside the hub while the visitor is at the fire,
+        // so there is no hitch when the smoke rises.
+        IEnumerator LoadStoryWorld()
+        {
+            if (SceneManager.GetSceneByName(storyScene).isLoaded) yield break; // already open in the editor
+            var op = SceneManager.LoadSceneAsync(storyScene, LoadSceneMode.Additive);
+            if (op == null) { Debug.LogError("[Transition] Story scene '" + storyScene + "' is not in the build settings."); yield break; }
+            yield return op;
+            Debug.Log("[Transition] Story world loaded");
         }
 
         public void SmokeToStory(Action onDone = null) => StartCoroutine(Swap(true, onDone));
@@ -51,6 +74,7 @@ namespace Itan.World
             yield return new WaitForSeconds(smokeLead);
 
             yield return Fade(0f, 1f);
+            if (toStory) yield return new WaitUntil(() => StoryReady);
             ShowWorld(toStory);
             yield return new WaitForSeconds(holdSeconds);
 
@@ -75,7 +99,19 @@ namespace Itan.World
         public void ShowWorld(bool story)
         {
             foreach (var go in hubObjects) if (go != null) go.SetActive(!story);
-            storyWorld.SetActive(story);
+            var world = StoryWorldRoot.Current;
+            if (world != null)
+            {
+                world.Show(story);
+                // The active scene decides the sky, ambient light and fog.
+                var active = story ? world.gameObject.scene : hubScene;
+                if (active.IsValid() && active.isLoaded && SceneManager.GetActiveScene() != active)
+                {
+                    SceneManager.SetActiveScene(active);
+                    DynamicGI.UpdateEnvironment();
+                }
+            }
+            else if (story) Debug.LogWarning("[Transition] Story world isn't loaded yet.");
             InStory = story;
         }
 

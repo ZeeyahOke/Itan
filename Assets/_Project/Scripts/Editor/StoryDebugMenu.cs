@@ -6,12 +6,13 @@ namespace Itan.EditorTools
     /// <summary>Editor helpers to look at the story world without playing.</summary>
     public static class StoryDebugMenu
     {
+        /// <summary>Opens the StoryWorld scene beside the hub and swaps which one is visible.</summary>
         [MenuItem("Itan/Debug/Preview Story World (toggle)")]
         static void Toggle()
         {
-            GameObject story = null, hub = GameObject.Find("Hub");
-            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                if (t.name == "StoryWorld") story = t.gameObject;
+            StoryScenes.OpenStory();
+            var story = StoryScenes.Find("StoryWorld");
+            var hub = StoryScenes.Find("Hub");
             if (story == null || hub == null) return;
             bool showStory = !story.activeSelf;
             story.SetActive(showStory);

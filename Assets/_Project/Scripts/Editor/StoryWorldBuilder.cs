@@ -24,6 +24,7 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Scene/Add Story World")]
         public static void Build()
         {
+            if (StoryScenes.StorySceneExists) { Debug.Log("[Itan] Story world already has its own scene."); return; }
             if (GameObject.Find("StoryWorld") != null || FindInactive("StoryWorld") != null)
             {
                 Debug.Log("[Itan] Story world already added.");

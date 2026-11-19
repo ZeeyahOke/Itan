@@ -20,9 +20,8 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Scene/Add Story Characters")]
         public static void Build()
         {
-            Transform world = null;
-            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                if (t.name == "StoryWorld") world = t;
+            StoryScenes.OpenStory();
+            var world = StoryScenes.Find("StoryWorld")?.transform;
             if (world == null) { Debug.LogError("[Itan] Add the story world first."); return; }
             if (world.Find("Characters") != null) { Debug.Log("[Itan] Story characters already added."); return; }
 
@@ -38,9 +37,7 @@ namespace Itan.EditorTools
             var ijapa = Tortoise(cast);
             Place(ijapa, IjapaStart, AjaStart);
 
-            var scene = EditorSceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
+            StoryScenes.SaveAll();
             Debug.Log("[Itan] Story characters added.");
         }
 

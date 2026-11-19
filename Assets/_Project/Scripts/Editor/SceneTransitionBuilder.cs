@@ -26,9 +26,6 @@ namespace Itan.EditorTools
             if (session == null || origin == null) { Debug.LogError("[Itan] Need a SessionManager and an XR Origin."); return; }
             if (Object.FindFirstObjectByType<SceneTransition>() != null) { Debug.Log("[Itan] Scene transition already added."); return; }
 
-            GameObject story = Find("StoryWorld");
-            if (story == null) { Debug.LogError("[Itan] Add the story world first."); return; }
-
             var root = new GameObject("SceneTransition");
             var smoke = BuildSmoke(root.transform);
             var fade = BuildFadeQuad(origin.Camera.transform);
@@ -46,7 +43,6 @@ namespace Itan.EditorTools
             var list = so.FindProperty("hubObjects");
             list.arraySize = hubObjects.Count;
             for (int i = 0; i < hubObjects.Count; i++) list.GetArrayElementAtIndex(i).objectReferenceValue = hubObjects[i];
-            so.FindProperty("storyWorld").objectReferenceValue = story;
             so.FindProperty("smoke").objectReferenceValue = smoke;
             so.FindProperty("fadeQuad").objectReferenceValue = fade;
             so.ApplyModifiedPropertiesWithoutUndo();

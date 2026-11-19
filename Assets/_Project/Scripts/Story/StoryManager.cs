@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Itan.Narration;
+using Itan.World;
 using UnityEngine;
 
 namespace Itan.Story
@@ -17,8 +18,9 @@ namespace Itan.Story
         [SerializeField] List<StoryBeat> beats = new List<StoryBeat>();
         [SerializeField] WordCardMoment wordMoment;
 
-        [Tooltip("One key moment per beat, in beat order. Each must implement IKeyMoment.")]
-        [SerializeField] MonoBehaviour[] keyMoments = new MonoBehaviour[0];
+        // The key moments live in the StoryWorld scene; StoryWorldRoot hands them over once it loads.
+        static IReadOnlyList<MonoBehaviour> KeyMoments =>
+            StoryWorldRoot.Current != null ? StoryWorldRoot.Current.KeyMoments : Array.Empty<MonoBehaviour>();
 
         /// <summary>A new beat is starting. Arguments: the beat and its 0-based index.</summary>
         public event Action<StoryBeat, int> BeatStarted;
@@ -58,7 +60,8 @@ namespace Itan.Story
 
                 yield return Narrate(beat.narration);
 
-                if (i < keyMoments.Length && keyMoments[i] is IKeyMoment moment)
+                var moments = KeyMoments;
+                if (i < moments.Count && moments[i] is IKeyMoment moment)
                     yield return moment.Play();
 
                 if (beat.afterMoment != null && beat.afterMoment.Count > 0)
@@ -76,7 +79,7 @@ namespace Itan.Story
         /// <summary>Put the rope and characters back for the next visitor.</summary>
         public void ResetMoments()
         {
-            foreach (var m in keyMoments)
+            foreach (var m in KeyMoments)
                 if (m is IKeyMoment moment) moment.ResetMoment();
         }
 

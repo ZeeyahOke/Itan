@@ -16,9 +16,9 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Scene/Add Key Moments")]
         public static void Build()
         {
-            var story = Object.FindFirstObjectByType<StoryManager>();
+            StoryScenes.OpenStory();
             var world = Find("StoryWorld");
-            if (story == null || world == null) { Debug.LogError("[Itan] Need the StoryManager and story world."); return; }
+            if (world == null) { Debug.LogError("[Itan] Need the story world."); return; }
             if (world.transform.Find("KeyMoments") != null) { Debug.Log("[Itan] Key moments already added."); return; }
 
             var pivot = Find("RopePivot").transform;
@@ -51,22 +51,25 @@ namespace Itan.EditorTools
             Set(fall, "shellWhole", ijapa.Find("Model/ShellWhole").gameObject);
             Set(fall, "shellCracked", ijapa.Find("Model/ShellCracked").gameObject);
 
-            var so = new SerializedObject(story);
-            var list = so.FindProperty("keyMoments");
-            list.arraySize = 3;
-            list.GetArrayElementAtIndex(0).objectReferenceValue = rope;
-            list.GetArrayElementAtIndex(1).objectReferenceValue = climb;
-            list.GetArrayElementAtIndex(2).objectReferenceValue = fall;
-            so.ApplyModifiedPropertiesWithoutUndo();
+            // The story scene's root hands these to the StoryManager at runtime.
+            var storyRoot = Object.FindFirstObjectByType<StoryWorldRoot>(FindObjectsInactive.Include);
+            if (storyRoot != null)
+            {
+                var so = new SerializedObject(storyRoot);
+                var list = so.FindProperty("keyMoments");
+                list.arraySize = 3;
+                list.GetArrayElementAtIndex(0).objectReferenceValue = rope;
+                list.GetArrayElementAtIndex(1).objectReferenceValue = climb;
+                list.GetArrayElementAtIndex(2).objectReferenceValue = fall;
+                so.ApplyModifiedPropertiesWithoutUndo();
+            }
 
             // Characters and rope move now, so they can't be static.
             foreach (var t in new[] { aja, ijapa, pivot })
                 foreach (Transform c in t.GetComponentsInChildren<Transform>(true))
                     GameObjectUtility.SetStaticEditorFlags(c.gameObject, 0);
 
-            var scene = EditorSceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
+            StoryScenes.SaveAll();
             Debug.Log("[Itan] Key moments added.");
         }
 
@@ -85,11 +88,6 @@ namespace Itan.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static GameObject Find(string name)
-        {
-            foreach (var t in Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                if (t.name == name) return t.gameObject;
-            return null;
-        }
+        static GameObject Find(string name) => StoryScenes.Find(name);
     }
 }

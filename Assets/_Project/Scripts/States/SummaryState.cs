@@ -25,7 +25,11 @@ namespace Itan.Session.States
             var words = new List<WordCard>();
             foreach (var beat in session.Story.Beats) if (beat.wordCard != null) words.Add(beat.wordCard);
 
-            session.Summary.Show(words, session.Results.QuizScore, session.Results.QuizTotal);
+            var results = session.Results;
+            if (results.startTime > 0f) results.sessionSeconds = Time.realtimeSinceStartup - results.startTime;
+            if (session.Logger != null) session.Logger.Save(results);
+
+            session.Summary.Show(words, results.quizScore, results.quizTotal);
             session.Summary.FinishPressed += Finish;
 
             var c = session.Closing;

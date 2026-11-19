@@ -21,6 +21,7 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter StoryState");
+            session.Story.WordMoment.WordCollected += RecordWord;
             session.Transition.SmokeToStory(() =>
             {
                 if (IsCurrent) session.Story.PlayAll(OnStoryDone);
@@ -32,6 +33,7 @@ namespace Itan.Session.States
         public void Exit()
         {
             Debug.Log("[Session] Exit StoryState");
+            session.Story.WordMoment.WordCollected -= RecordWord;
             session.Story.Stop();
         }
 
@@ -40,6 +42,11 @@ namespace Itan.Session.States
             session.Transition.Cancel();
             session.Transition.ShowWorld(false);
             GoToQuiz();
+        }
+
+        void RecordWord(Itan.Story.WordCard word, int tries, bool byButton)
+        {
+            session.Results.words.Add(new WordResult { word = word.yorubaWord, tries = tries, answeredByButton = byButton });
         }
 
         void OnStoryDone()

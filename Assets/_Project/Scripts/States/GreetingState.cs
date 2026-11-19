@@ -18,6 +18,8 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter GreetingState");
+            session.Results.startTime = Time.realtimeSinceStartup;
+            session.Results.startedAt = System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             // Face every visitor toward the fire at the same eye height.
             if (session.Seat != null) session.Seat.Recenter();
 

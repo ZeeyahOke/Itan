@@ -35,6 +35,7 @@ namespace Itan.Session
         [SerializeField] CardQuiz quiz;
         [SerializeField] ClosingScript closing;
         [SerializeField] SummaryPanel summary;
+        [SerializeField] SessionLogger logger;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -50,6 +51,7 @@ namespace Itan.Session
         public CardQuiz Quiz => quiz;
         public ClosingScript Closing => closing;
         public SummaryPanel Summary => summary;
+        public SessionLogger Logger => logger;
 
         /// <summary>What happened this visit (quiz score, and more later). Fresh for every visitor.</summary>
         public SessionResults Results { get; private set; } = new SessionResults();

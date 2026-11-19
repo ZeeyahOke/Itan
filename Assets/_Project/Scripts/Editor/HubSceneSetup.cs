@@ -458,6 +458,20 @@ namespace Itan.EditorTools
             Debug.Log("[Itan] Controller haptics added.");
         }
 
+        [MenuItem("Itan/Scene/Add Session Logger")]
+        public static void AddSessionLogger()
+        {
+            var session = Object.FindFirstObjectByType<SessionManager>();
+            if (session == null) { Debug.LogError("[Itan] Add the Session Manager first."); return; }
+            if (session.GetComponent<SessionLogger>() != null) { Debug.Log("[Itan] Session logger already added."); return; }
+            var logger = session.gameObject.AddComponent<SessionLogger>();
+            var so = new SerializedObject(session);
+            so.FindProperty("logger").objectReferenceValue = logger;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            SaveScene();
+            Debug.Log("[Itan] Session logger added.");
+        }
+
         static void SaveScene()
         {
             var scene = EditorSceneManager.GetActiveScene();

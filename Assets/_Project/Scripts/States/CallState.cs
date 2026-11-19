@@ -10,6 +10,7 @@ namespace Itan.Session.States
     public class CallState : ISessionState
     {
         readonly SessionManager session;
+        float callStart;
 
         public CallState(SessionManager session)
         {
@@ -20,6 +21,7 @@ namespace Itan.Session.States
         {
             Debug.Log("[Session] Enter CallState");
             session.Voice.Missed += OnMissed;
+            callStart = Time.realtimeSinceStartup;
             session.Narration.Play(session.Opening.call, ListenForAnswer);
         }
 
@@ -46,6 +48,8 @@ namespace Itan.Session.States
         void OnAnswered()
         {
             Debug.Log("[Call] Visitor answered the call");
+            session.Results.secondsToAnswerCall = Time.realtimeSinceStartup - callStart;
+            session.Results.callAnsweredByButton = session.Voice.LastAnsweredByButton;
             session.ChangeState(new StoryState(session));
         }
     }

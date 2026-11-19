@@ -24,6 +24,7 @@ namespace Itan.Story
         public event Action<StoryBeat, int> BeatStarted;
 
         public IReadOnlyList<StoryBeat> Beats => beats;
+        public WordCardMoment WordMoment => wordMoment;
 
         Coroutine running;
 

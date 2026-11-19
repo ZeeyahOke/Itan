@@ -39,8 +39,8 @@ namespace Itan.Session.States
 
         void OnQuizDone(int score, int total)
         {
-            session.Results.QuizScore = score;
-            session.Results.QuizTotal = total;
+            session.Results.quizScore = score;
+            session.Results.quizTotal = total;
             Debug.Log("[Quiz] Finished: " + score + " of " + total);
             GoToSummary();
         }

@@ -92,6 +92,12 @@ namespace Itan.EditorTools
         [MenuItem("Itan/Debug/Quiz/Flash Test Card Wrong", true)]
         static bool CanUseQuizDebug() => Application.isPlaying;
 
+        [MenuItem("Itan/Debug/Press Finish Button")]
+        static void PressFinish() => Object.FindFirstObjectByType<Itan.UI.SummaryPanel>()?.SimulateFinish();
+
+        [MenuItem("Itan/Debug/Press Finish Button", true)]
+        static bool CanPressFinish() => Application.isPlaying;
+
         [MenuItem("Itan/Debug/Simulate Bow")]
         static void SimulateBow() => Object.FindFirstObjectByType<Itan.Detection.GreetingDetector>()?.SimulateBow();
 

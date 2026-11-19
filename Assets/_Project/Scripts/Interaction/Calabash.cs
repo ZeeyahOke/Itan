@@ -23,11 +23,22 @@ namespace Itan.Interaction
         XRGrabInteractable grab;
         Rigidbody body;
 
+        // Where it waits on its stand, so the next visitor finds it there again.
+        bool initialised;
+        Transform homeParent;
+        Vector3 homePosition;
+        Quaternion homeRotation;
+
         void Awake()
         {
             grab = GetComponent<XRGrabInteractable>();
             body = GetComponent<Rigidbody>();
             grab.selectEntered.AddListener(OnGrabbed);
+
+            homeParent = transform.parent;
+            homePosition = transform.position;
+            homeRotation = transform.rotation;
+            initialised = true;
         }
 
         void OnDestroy() => grab.selectEntered.RemoveListener(OnGrabbed);
@@ -49,6 +60,18 @@ namespace Itan.Interaction
         {
             yield return null;
             SnapToLap();
+        }
+
+        /// <summary>Back on the stand, hidden and grabbable again, for the next visitor.</summary>
+        public void ResetForNextVisitor()
+        {
+            if (!initialised) return; // never offered, so nothing moved
+            StopAllCoroutines();
+            transform.SetParent(homeParent, true);
+            transform.SetPositionAndRotation(homePosition, homeRotation);
+            grab.enabled = true;
+            IsInLap = false;
+            gameObject.SetActive(false);
         }
 
         public void SnapToLap()

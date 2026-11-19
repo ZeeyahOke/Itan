@@ -34,6 +34,7 @@ namespace Itan.Session
         [SerializeField] StatusUI status;
         [SerializeField] CardQuiz quiz;
         [SerializeField] ClosingScript closing;
+        [SerializeField] SummaryPanel summary;
 
         public ISessionState CurrentState { get; private set; }
         public StartMenuUI StartMenu => startMenu;
@@ -48,6 +49,7 @@ namespace Itan.Session
         public StatusUI Status => status;
         public CardQuiz Quiz => quiz;
         public ClosingScript Closing => closing;
+        public SummaryPanel Summary => summary;
 
         /// <summary>What happened this visit (quiz score, and more later). Fresh for every visitor.</summary>
         public SessionResults Results { get; private set; } = new SessionResults();
@@ -65,6 +67,26 @@ namespace Itan.Session
                 CurrentState?.Skip();
 #endif
             CurrentState?.Tick();
+        }
+
+        /// <summary>
+        /// Clear everything one visitor did (calabash, cards, score, story world)
+        /// and go back to the start menu, without restarting the app.
+        /// </summary>
+        public void ResetForNextVisitor()
+        {
+            Debug.Log("[Session] Reset for next visitor");
+            narration.Stop();
+            voice.Cancel();
+            story.Stop();
+            story.ResetMoments();
+            quiz.ResetQuiz();
+            status.ResetStatus();
+            calabash.ResetForNextVisitor();
+            transition.Cancel();
+            transition.ShowWorld(false);
+            Results = new SessionResults();
+            ChangeState(new MenuState(this));
         }
 
         public void ChangeState(ISessionState next)

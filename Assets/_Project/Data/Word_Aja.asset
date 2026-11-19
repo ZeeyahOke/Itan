@@ -15,5 +15,5 @@ MonoBehaviour:
   yorubaWord: "aj\xE1"
   englishMeaning: dog
   pronunciation: ah-JAH
-  elderClip: {fileID: 8300000, guid: 347e8800cfa0f4ee7835304c65caded0, type: 3}
+  elderClip: {fileID: 8300000, guid: 273a0ccd5e45d4d76b57d38603ff0e10, type: 3}
   picture: {fileID: 0}

@@ -22,7 +22,13 @@ namespace Itan.Session.States
             Debug.Log("[Session] Enter CallState");
             session.Voice.Missed += OnMissed;
             callStart = Time.realtimeSinceStartup;
-            session.Narration.Play(session.Opening.call, ListenForAnswer);
+            var o = session.Opening;
+            // Explain, demonstrate the answer, then make the call.
+            session.Narration.PlaySequence(new[] { o.callIntro, o.answerExample, o.call }, () =>
+            {
+                callStart = Time.realtimeSinceStartup; // time the answer from the call itself
+                ListenForAnswer();
+            });
         }
 
         public void Tick() { }

@@ -19,6 +19,9 @@ namespace Itan.Story
         [Tooltip("What the elder says in this beat, in order.")]
         public List<NarrationLine> narration = new List<NarrationLine>();
 
+        [Tooltip("What the elder says after the beat's key moment (e.g. explaining the fall).")]
+        public List<NarrationLine> afterMoment = new List<NarrationLine>();
+
         [Tooltip("The word the player learns at the end of this beat.")]
         public WordCard wordCard;
     }

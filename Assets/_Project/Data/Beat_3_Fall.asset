@@ -15,8 +15,23 @@ MonoBehaviour:
   beatNumber: 3
   title: "\xCCj\xE0p\xE1 Falls"
   narration:
-  - clip: {fileID: 8300000, guid: a9c16a53549b843358a4975527e56c25, type: 3}
-    subtitle: "Ìjàpá the tortoise was jealous. He copied the song, and the rope came down for him too."
-  - clip: {fileID: 8300000, guid: 34a603179b95d4158998b5609b93d718, type: 3}
-    subtitle: "But halfway up, the rope was cut. Ìjàpá fell to the ground, and his shell cracked into pieces."
+  - clip: {fileID: 8300000, guid: 9663a7e9fac1646c48a566f2efacf69a, type: 3}
+    subtitle: "\xCCj\xE0p\xE1 the tortoise was curious. Why was Aj\xE1 so strong,
+      when everyone else was hungry?"
+    spokenText: Ee-jah-pah the tortoise was curious. Why was Ah-jah so strong, when
+      everyone else was hungry?
+  - clip: {fileID: 8300000, guid: 56caed0b044f240a7becb9bc94b9c919, type: 3}
+    subtitle: "One night he followed Aj\xE1, hid in the long grass, and heard the
+      secret song. The next night, \xCCj\xE0p\xE1 sang it himself."
+    spokenText: One night he followed Ah-jah, hid in the long grass, and heard the
+      secret song. The next night, Ee-jah-pah sang it himself.
+  afterMoment:
+  - clip: {fileID: 8300000, guid: e88911257b706487ea876948a089f19b, type: 3}
+    subtitle: "But Aj\xE1's mother knew her son's voice. When the tortoise was halfway
+      up, she cut the rope."
+    spokenText: But Ah-jah's mother knew her son's voice. When the tortoise was halfway
+      up, she cut the rope.
+  - clip: {fileID: 8300000, guid: 2f33068392e8c47c2860ea38e0fe24c8, type: 3}
+    subtitle: "Down fell \xCCj\xE0p\xE1, and his shell cracked into pieces."
+    spokenText: Down fell Ee-jah-pah, and his shell cracked into pieces.
   wordCard: {fileID: 11400000, guid: b013edc6c7a9d438ea9af38c26095077, type: 2}

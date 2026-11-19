@@ -15,8 +15,17 @@ MonoBehaviour:
   beatNumber: 1
   title: The Famine
   narration:
-  - clip: {fileID: 8300000, guid: f3fdb36aa88284bc1bd8f644f90f5ad8, type: 3}
-    subtitle: "Long ago, a great famine came to the land. Every pot was empty and every field was dry."
-  - clip: {fileID: 8300000, guid: fda82eb5781d04c2caa072b37e83846f, type: 3}
-    subtitle: "But Ajá the dog never looked hungry. Each night he sang a secret song, and a rope came down from the sky."
+  - clip: {fileID: 8300000, guid: e8beb7a9b466f4c13ab66c7b751ccc27, type: 3}
+    subtitle: Long ago, a great famine came to the land. Every pot was empty, and
+      every field was dry.
+    spokenText: 
+  - clip: {fileID: 8300000, guid: 8cc63562d90f0451a8be89bd25ceb3b5, type: 3}
+    subtitle: "But Aj\xE1 the dog never looked hungry. Each night he slipped away
+      to a quiet place, and sang a secret song to his mother in the sky."
+    spokenText: But Ah-jah the dog never looked hungry. Each night he slipped away
+      to a quiet place, and sang a secret song to his mother in the sky.
+  afterMoment:
+  - clip: {fileID: 8300000, guid: b1dff16e3986347aeb2c342d1e11437c, type: 3}
+    subtitle: And down from the clouds came a rope.
+    spokenText: 
   wordCard: {fileID: 11400000, guid: b6ea64a380cb541f7a788caa28c9bdde, type: 2}

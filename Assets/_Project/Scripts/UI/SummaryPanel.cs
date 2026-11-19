@@ -17,6 +17,7 @@ namespace Itan.UI
         [SerializeField] TextMeshProUGUI wordsText;
         [SerializeField] TextMeshProUGUI scoreText;
         [SerializeField] Button finishButton;
+        [SerializeField] AudioSource sting;
 
         public event Action FinishPressed;
 
@@ -34,6 +35,7 @@ namespace Itan.UI
             wordsText.text = sb.ToString().TrimEnd();
             scoreText.text = "Quiz: " + score + " of " + total;
             gameObject.SetActive(true);
+            if (sting != null) sting.Play();
         }
 
         public void Hide() => gameObject.SetActive(false);

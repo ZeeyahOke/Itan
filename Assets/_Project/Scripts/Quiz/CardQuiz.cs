@@ -19,6 +19,11 @@ namespace Itan.Quiz
         [SerializeField] QuizCard[] cards;
         [SerializeField] float resultPause = 1.4f;
 
+        [Header("Sound")]
+        [SerializeField] AudioSource sfx;
+        [SerializeField] AudioClip rightSting;
+        [SerializeField] AudioClip wrongSting;
+
         /// <summary>A round was answered. Arguments: the word asked, whether the pick was right.</summary>
         public event Action<WordCard, bool> RoundAnswered;
 
@@ -84,6 +89,7 @@ namespace Itan.Quiz
 
                 bool correct = logic.Answer(picked.WordIndex);
                 picked.Flash(correct);
+                if (sfx != null) sfx.PlayOneShot(correct ? rightSting : wrongSting);
                 if (!correct)
                     foreach (var card in cards)
                         if (card.isActiveAndEnabled && card.WordIndex == words.IndexOf(word)) card.Flash(true);

@@ -15,5 +15,5 @@ MonoBehaviour:
   yorubaWord: "\xECy\xE1"
   englishMeaning: mother
   pronunciation: ee-YAH
-  elderClip: {fileID: 8300000, guid: 0e5bd3074ac404b8ab40226a1e48cd11, type: 3}
+  elderClip: {fileID: 8300000, guid: 9c14cfc29e5d84e87bbd8b2abf32ef58, type: 3}
   picture: {fileID: 0}

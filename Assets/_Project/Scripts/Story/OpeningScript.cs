@@ -12,6 +12,11 @@ namespace Itan.Story
         public NarrationLine welcome;
         public NarrationLine bowPrompt;
         public NarrationLine calabashPrompt;
+
+        [Tooltip("The elder explains the call and response before calling.")]
+        public NarrationLine callIntro;
+        [Tooltip("An example of the answer, so the visitor hears how to say it.")]
+        public NarrationLine answerExample;
         public NarrationLine call;
     }
 }

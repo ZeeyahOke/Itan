@@ -11,10 +11,23 @@ namespace Itan.World
         [SerializeField] Transform ropePivot;
         [SerializeField] float dropSeconds = 1.8f;
 
+        [Tooltip("Ajá's voice, at Ajá.")]
+        [SerializeField] AudioSource singer;
+        [Tooltip("The secret song Ajá sings to call the rope down.")]
+        [SerializeField] AudioClip song;
+
         void Awake() => ResetMoment();
 
         public IEnumerator Play()
         {
+            // Ajá sings; the rope starts to come down as the song ends.
+            if (singer != null && song != null)
+            {
+                singer.clip = song;
+                singer.Play();
+                yield return new WaitForSeconds(Mathf.Max(0f, song.length - 1.2f));
+            }
+
             ropePivot.gameObject.SetActive(true);
             for (float t = 0f; t < dropSeconds; t += Time.deltaTime)
             {
@@ -31,6 +44,7 @@ namespace Itan.World
 
         public void ResetMoment()
         {
+            if (singer != null) singer.Stop();
             ropePivot.localScale = new Vector3(1f, 0.001f, 1f);
             ropePivot.localRotation = Quaternion.identity;
             ropePivot.gameObject.SetActive(false);

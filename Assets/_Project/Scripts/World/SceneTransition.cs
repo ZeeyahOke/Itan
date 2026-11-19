@@ -15,6 +15,8 @@ namespace Itan.World
         [SerializeField] GameObject[] hubObjects;
         [SerializeField] GameObject storyWorld;
         [SerializeField] ParticleSystem smoke;
+        [Tooltip("Talking drum that announces each journey through the smoke.")]
+        [SerializeField] AudioSource drum;
 
         [Tooltip("Quad in front of the eyes, used for the fade.")]
         [SerializeField] Renderer fadeQuad;
@@ -45,6 +47,7 @@ namespace Itan.World
         {
             IsPlaying = true;
             smoke.Play();
+            if (drum != null) drum.Play();
             yield return new WaitForSeconds(smokeLead);
 
             yield return Fade(0f, 1f);

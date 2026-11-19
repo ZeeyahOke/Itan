@@ -22,6 +22,13 @@ namespace Itan.World
         [SerializeField, Range(0.2f, 0.8f)] float cutAt = 0.5f;   // how far up the rope he gets
         [SerializeField] float fallSeconds = 0.7f;
 
+        [Tooltip("Ìjàpá's voice, at Ìjàpá.")]
+        [SerializeField] AudioSource singer;
+        [Tooltip("Ìjàpá's croaky copy of Ajá's song.")]
+        [SerializeField] AudioClip song;
+        [Tooltip("Played when he hits the ground.")]
+        [SerializeField] AudioClip crack;
+
         Vector3 startPosition;
         Quaternion startRotation;
 
@@ -35,6 +42,14 @@ namespace Itan.World
         {
             yield return Tween.Face(climber, ropeBottom.position, 0.3f);
             yield return Tween.Move(climber, ropeBottom.position, walkSeconds);
+
+            // He sings the stolen song at the foot of the rope.
+            if (singer != null && song != null)
+            {
+                singer.clip = song;
+                singer.Play();
+                yield return new WaitForSeconds(song.length);
+            }
 
             Vector3 halfway = Vector3.Lerp(ropeBottom.position, ropeTop.position, cutAt);
             yield return Tween.Move(climber, halfway, climbSeconds);
@@ -57,6 +72,7 @@ namespace Itan.World
             climber.rotation = Quaternion.LookRotation(Vector3.back); // lands facing the visitor
 
             // Crack!
+            if (singer != null && crack != null) singer.PlayOneShot(crack);
             shellWhole.SetActive(false);
             shellCracked.SetActive(true);
             yield return new WaitForSeconds(1.0f);
@@ -64,6 +80,7 @@ namespace Itan.World
 
         public void ResetMoment()
         {
+            if (singer != null) singer.Stop();
             climber.SetPositionAndRotation(startPosition, startRotation);
             shellWhole.SetActive(true);
             shellCracked.SetActive(false);

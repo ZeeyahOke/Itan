@@ -61,6 +61,9 @@ namespace Itan.Story
                 if (i < keyMoments.Length && keyMoments[i] is IKeyMoment moment)
                     yield return moment.Play();
 
+                if (beat.afterMoment != null && beat.afterMoment.Count > 0)
+                    yield return Narrate(beat.afterMoment);
+
                 if (wordMoment != null && beat.wordCard != null)
                     yield return wordMoment.Play(beat.wordCard);
             }

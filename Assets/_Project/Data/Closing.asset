@@ -13,14 +13,21 @@ MonoBehaviour:
   m_Name: Closing
   m_EditorClassIdentifier: Assembly-CSharp::Itan.Story.ClosingScript
   quizIntro:
-    clip: {fileID: 8300000, guid: 6808109f0bd2e4e94a86cb02623f227d, type: 3}
-    subtitle: Now, let us see what is in your calabash. Listen, and choose the right
-      card.
+    clip: {fileID: 8300000, guid: 20ca0fbceb70b476e9bad8840556e0b7, type: 3}
+    subtitle: Now, let us see what is in your calabash. Listen to each word, and
+      choose the card that matches.
+    spokenText: 
   lesson:
-    clip: {fileID: 8300000, guid: 4d310e14402b84453ab36585c3710a39, type: 3}
-    subtitle: "Remember \xCCj\xE0p\xE1, my child. Greed and trickery may lift you
-      up, but they will always let you fall."
+    clip: {fileID: 8300000, guid: e006883add50f4f18838671772727e72, type: 3}
+    subtitle: "And that, my child, is why \xCCj\xE0p\xE1's shell is cracked to this
+      day. Being curious is good, but taking what is not yours will always let you
+      fall."
+    spokenText: And that, my child, is why Ee-jah-pah's shell is cracked to this
+      day. Being curious is good, but taking what is not yours will always let you
+      fall.
   farewell:
-    clip: {fileID: 8300000, guid: ac00eab8d3fd14f3e837d94bd04d5877, type: 3}
-    subtitle: "You carry three new words home tonight. \xD3 d\xE0b\u1ECD\u0300, go
-      well."
+    clip: {fileID: 8300000, guid: 795784703171643429fad9681f01b60d, type: 3}
+    subtitle: "You carry three new words home tonight: aj\xE1, \xECy\xE1 and \xECj\xE0p\xE1.
+      \xD3 d\xE0b\u1ECD\u0300, go well."
+    spokenText: 'You carry three new words home tonight: ah-jah, ee-yah, and ee-jah-pah.
+      Oh dah-baw, go well.'

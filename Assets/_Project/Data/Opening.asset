@@ -13,15 +13,29 @@ MonoBehaviour:
   m_Name: Opening
   m_EditorClassIdentifier: Assembly-CSharp::Itan.Story.OpeningScript
   welcome:
-    clip: {fileID: 8300000, guid: 7b7bd576c6ffc463a94261a7dc17bd8b, type: 3}
+    clip: {fileID: 8300000, guid: bf0bf5296f8c243e98c6fd2cdf625f4e, type: 3}
     subtitle: Welcome, my child. Come, sit by the fire with us.
+    spokenText: 
   bowPrompt:
-    clip: {fileID: 8300000, guid: e6e286d827fbc4f30a4eca3dc15b41dc, type: 3}
+    clip: {fileID: 8300000, guid: 98d6ee444ac1e4ce08266a633fa6d9f7, type: 3}
     subtitle: Before a story is told, we greet our elders. Bow your head to greet
       me.
+    spokenText: 
   calabashPrompt:
-    clip: {fileID: 8300000, guid: 906a677629dc145d0b06928c3e308c0c, type: 3}
+    clip: {fileID: 8300000, guid: dcfd831281e1745cf88f86a72f8fa95f, type: 3}
     subtitle: Good. Now take this calabash. It will hold the words you learn tonight.
+    spokenText: 
+  callIntro:
+    clip: {fileID: 8300000, guid: c5cad7f13aafb429388de1b1a9cc9c15, type: 3}
+    subtitle: "Every story begins with a call. When I say \xC0l\u1ECD\u0301 o, you
+      answer \xC0\xE0l\u1ECD\u0300. Listen."
+    spokenText: Every story begins with a call. When I say, Ah-law oh, you answer,
+      Ah-ah-law. Listen.
+  answerExample:
+    clip: {fileID: 8300000, guid: 9b6099363899c46dca27e16064c9d4ac, type: 3}
+    subtitle: "\xC0\xE0l\u1ECD\u0300!"
+    spokenText: 
   call:
-    clip: {fileID: 8300000, guid: 0233f8dde50864078ad9b35496ae513f, type: 3}
+    clip: {fileID: 8300000, guid: c90d40e1e62f94eaeb220ca962ce0c61, type: 3}
     subtitle: "\xC0l\u1ECD\u0301 o!   (Answer: \xC0\xE0l\u1ECD\u0300!)"
+    spokenText: 

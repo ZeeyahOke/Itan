@@ -74,6 +74,13 @@ namespace Itan.EditorTools
             return Lathe("CalabashBowl", p);
         }
 
+        /// <summary>A carved round Yoruba stool, about 0.33 m tall: wide seat, narrow waist, round foot.</summary>
+        public static Mesh CarvedStool() => Lathe("CarvedStool", new[]
+        {
+            new Vector2(0f, 0f), new Vector2(0.16f, 0f), new Vector2(0.16f, 0.03f), new Vector2(0.09f, 0.08f), new Vector2(0.065f, 0.16f),
+            new Vector2(0.09f, 0.25f), new Vector2(0.18f, 0.29f), new Vector2(0.185f, 0.32f), new Vector2(0.16f, 0.335f), new Vector2(0f, 0.335f),
+        }, 24, 1f);
+
         /// <summary>Round mud wall of a hut, 1 m radius and 1 m tall (scale to size).</summary>
         public static Mesh HutWall() => Lathe("HutWall", new[]
         {

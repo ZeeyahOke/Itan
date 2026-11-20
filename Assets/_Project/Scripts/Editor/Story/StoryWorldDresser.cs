@@ -228,6 +228,14 @@ namespace Itan.EditorTools
             Sized("Pepper_Green", feast, feast.position + new Vector3(-0.7f, 0f, -0.5f), 10f, 0.1f);
             MeshObject("WaterPot", feast, ProcMesh.ClayPot(), Terracotta(), new Vector3(1.1f, 0f, -0.3f), 0f, 1.6f);
 
+            // Carved stools for Ìyá and Ajá, set just behind where they sit.
+            var wood = TexMat("Story_CarvedWood", "palm_bark", 1f, new Color(0.62f, 0.4f, 0.24f), new Vector2(2f, 1f));
+            foreach (var seat in new[] { MotherSeat, AjaSeat })
+            {
+                var toFeast = FeastCentre - seat; toFeast.y = 0f;
+                MeshObject("CarvedStool", home, ProcMesh.CarvedStool(), wood, seat - toFeast.normalized * 0.14f, 0f, 1f);
+            }
+
 
             // Markers the moments use.
             var markers = Group("SkyMarkers", home, Vector3.zero);

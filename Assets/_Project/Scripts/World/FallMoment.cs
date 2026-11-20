@@ -31,26 +31,36 @@ namespace Itan.World
 
         Vector3 startPosition;
         Quaternion startRotation;
+        CharacterActor actor;
 
         void Awake()
         {
             startPosition = climber.position;
             startRotation = climber.rotation;
+            actor = climber.GetComponent<CharacterActor>();
         }
+
+        void Act(string state) { if (actor != null) actor.Play(state); }
 
         public IEnumerator Play()
         {
+            // Out of the long grass, creeping, then walking to the rope.
+            Act(CharacterActor.Sneak);
             yield return Tween.Face(climber, ropeBottom.position, 0.3f);
             yield return Tween.Move(climber, ropeBottom.position, walkSeconds);
+            Act(CharacterActor.Idle);
 
             // He sings the stolen song at the foot of the rope.
             if (singer != null && song != null)
             {
                 singer.clip = song;
                 singer.Play();
+                Act(CharacterActor.Sing);
                 yield return new WaitForSeconds(song.length);
             }
 
+            yield return Tween.Face(climber, ropeBottom.position + Vector3.forward, 0.2f);
+            Act(CharacterActor.Climb);
             Vector3 halfway = Vector3.Lerp(ropeBottom.position, ropeTop.position, cutAt);
             yield return Tween.Move(climber, halfway, climbSeconds);
             yield return new WaitForSeconds(0.3f);
@@ -59,6 +69,7 @@ namespace Itan.World
             ropePivot.localScale = new Vector3(1f, 1f - cutAt, 1f);
 
             // Fall, speeding up, with a tumble.
+            Act(CharacterActor.Fall);
             Vector3 from = climber.position;
             Vector3 ground = ropeBottom.position + new Vector3(0.6f, 0f, -0.4f);
             for (float t = 0f; t < fallSeconds; t += Time.deltaTime)
@@ -75,7 +86,8 @@ namespace Itan.World
             if (singer != null && crack != null) singer.PlayOneShot(crack);
             shellWhole.SetActive(false);
             shellCracked.SetActive(true);
-            yield return new WaitForSeconds(1.0f);
+            Act(CharacterActor.Land);
+            yield return new WaitForSeconds(1.6f);
         }
 
         public void ResetMoment()
@@ -84,6 +96,7 @@ namespace Itan.World
             climber.SetPositionAndRotation(startPosition, startRotation);
             shellWhole.SetActive(true);
             shellCracked.SetActive(false);
+            if (actor != null) actor.ResetPose();
         }
     }
 }

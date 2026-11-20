@@ -12,8 +12,10 @@ namespace Itan.World
         [SerializeField] Transform ropeTop;
         [Tooltip("Where the climber ends up, next to the mother.")]
         [SerializeField] Transform arrival;
-        [SerializeField] float walkSeconds = 1.4f;
-        [SerializeField] float climbSeconds = 2.6f;
+        [SerializeField] float walkSeconds = 1.6f;
+        [SerializeField] float climbSeconds = 4.5f;
+
+        CharacterActor actor;
 
         Vector3 startPosition;
         Quaternion startRotation;
@@ -22,21 +24,33 @@ namespace Itan.World
         {
             startPosition = climber.position;
             startRotation = climber.rotation;
+            actor = climber.GetComponent<CharacterActor>();
         }
+
+        void Act(string state) { if (actor != null) actor.Play(state); }
 
         public IEnumerator Play()
         {
+            Act(CharacterActor.Walk);
             yield return Tween.Face(climber, ropeBottom.position, 0.3f);
             yield return Tween.Move(climber, ropeBottom.position, walkSeconds);
+            // Face the rope and climb, hand over hand.
+            yield return Tween.Face(climber, ropeBottom.position + Vector3.forward, 0.2f);
+            Act(CharacterActor.Climb);
             yield return Tween.Move(climber, ropeTop.position, climbSeconds);
-            yield return Tween.Move(climber, arrival.position, 0.5f);
-            yield return Tween.Face(climber, arrival.position + Vector3.back, 0.3f); // turn toward the visitor
+            // Over the edge of the cloud and across to his place by the feast.
+            Act(CharacterActor.Walk);
+            yield return Tween.Face(climber, arrival.position, 0.2f);
+            yield return Tween.Move(climber, arrival.position, 1.2f);
+            yield return Tween.Face(climber, arrival.position + arrival.forward, 0.3f);
+            Act(CharacterActor.Sit);
             yield return new WaitForSeconds(0.4f);
         }
 
         public void ResetMoment()
         {
             climber.SetPositionAndRotation(startPosition, startRotation);
+            if (actor != null) actor.ResetPose();
         }
     }
 }

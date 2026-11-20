@@ -16,7 +16,13 @@ namespace Itan.World
         [Tooltip("The secret song Ajá sings to call the rope down.")]
         [SerializeField] AudioClip song;
 
-        void Awake() => ResetMoment();
+        CharacterActor actor;
+
+        void Awake()
+        {
+            if (singer != null) actor = singer.GetComponentInParent<CharacterActor>();
+            ResetMoment();
+        }
 
         public IEnumerator Play()
         {
@@ -25,7 +31,9 @@ namespace Itan.World
             {
                 singer.clip = song;
                 singer.Play();
+                if (actor != null) actor.Play(CharacterActor.Sing);
                 yield return new WaitForSeconds(Mathf.Max(0f, song.length - 1.2f));
+                if (actor != null) actor.Play(CharacterActor.Idle, 0.6f);
             }
 
             ropePivot.gameObject.SetActive(true);

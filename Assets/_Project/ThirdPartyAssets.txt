@@ -29,3 +29,5 @@ https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_dry/brown_mud_
 https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/brown_mud_dry/brown_mud_dry_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/brown_mud_dry/brown_mud_dry_nor.jpg	CC0	Poly Haven	brown_mud_dry normal
 https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/palm_bark/palm_bark_diff_1k.jpg	Assets/_ThirdParty/PolyHaven/palm_bark/palm_bark_diff.jpg	CC0	Poly Haven	palm_bark colour
 https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/palm_bark/palm_bark_nor_gl_1k.jpg	Assets/_ThirdParty/PolyHaven/palm_bark/palm_bark_nor.jpg	CC0	Poly Haven	palm_bark normal
+https://opengameart.org/sites/default/files/universal_animation_librarystandard.zip	Assets/_ThirdParty/Quaternius/UniversalAnimationLibrary/	CC0	Quaternius	Universal Animation Library (Standard)
+https://opengameart.org/sites/default/files/universal_animation_library_2standard.zip	Assets/_ThirdParty/Quaternius/UniversalAnimationLibrary2/	CC0	Quaternius	Universal Animation Library 2 (Standard)

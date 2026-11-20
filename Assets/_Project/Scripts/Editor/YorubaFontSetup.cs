@@ -7,57 +7,70 @@ using UnityEngine.TextCore.LowLevel;
 namespace Itan.EditorTools
 {
     /// <summary>
-    /// Builds a TextMesh Pro font asset from Noto Sans (SIL Open Font License),
-    /// which has every Yoruba letter and tone mark (ọ, ẹ, ṣ, combining tones),
-    /// then makes it the default and applies it to every text in the open scene.
-    /// Menu: Itan > Build > Apply Yoruba Font
+    /// Story fonts (SIL Open Font License), both with every Yoruba letter and tone mark
+    /// (ọ, ẹ, ṣ, combining tones) and proper mark positioning:
+    ///   Alegreya (calligraphic, storybook) for display text: titles, the Yoruba word, the word count.
+    ///   Alegreya Sans for everything read at length: subtitles, buttons, prompts.
+    /// Menu: Itan > Build > Apply Story Fonts (works on every open scene).
     /// </summary>
     public static class YorubaFontSetup
     {
         const string Folder = "Assets/_Project/Art/Fonts";
-        const string RegularTtf = Folder + "/NotoSans-Regular.ttf";
-        const string BoldTtf = Folder + "/NotoSans-Bold.ttf";
-        const string RegularAsset = Folder + "/NotoSans-Regular SDF.asset";
-        const string BoldAsset = Folder + "/NotoSans-Bold SDF.asset";
 
         // Characters we know the slice shows, baked in up front so nothing has to be added on the headset.
         const string Preload =
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?'\"()-…–—‘’“”/&" +
-            "ÀÁÈÉÌÍÒÓÙÚàáèéìíòóùúẸẹỌọṢṣ̀́";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 .,:;!?'\"()-…–—‘’“”/&·" +
+            "ÀÁÈÉÌÍÒÓÙÚàáèéìíòóùúẸẹỌọṢṣ\u0300\u0301";
 
-        [MenuItem("Itan/Build/Apply Yoruba Font")]
+        // Objects (by name) that use the display face.
+        static readonly string[] DisplayNames = { "Title", "Yoruba", "WordLabel" };
+
+        [MenuItem("Itan/Build/Apply Story Fonts")]
         public static void Apply()
         {
-            var regular = GetOrCreate(RegularTtf, RegularAsset);
-            var bold = GetOrCreate(BoldTtf, BoldAsset);
-            if (regular == null || bold == null) return;
+            var display = GetOrCreate(Folder + "/Alegreya-Bold.ttf", Folder + "/Alegreya-Bold SDF.asset");
+            var body = GetOrCreate(Folder + "/AlegreyaSans-Regular.ttf", Folder + "/AlegreyaSans-Regular SDF.asset");
+            var bodyBold = GetOrCreate(Folder + "/AlegreyaSans-Bold.ttf", Folder + "/AlegreyaSans-Bold SDF.asset");
+            if (display == null || body == null || bodyBold == null) return;
 
             // Bold text uses the real bold face instead of a faked one.
-            regular.fontWeightTable[7].regularTypeface = bold;
-            EditorUtility.SetDirty(regular);
+            body.fontWeightTable[7].regularTypeface = bodyBold;
+            EditorUtility.SetDirty(body);
 
-            // New text defaults to Noto.
             var settings = new SerializedObject(TMP_Settings.instance);
-            settings.FindProperty("m_defaultFontAsset").objectReferenceValue = regular;
+            settings.FindProperty("m_defaultFontAsset").objectReferenceValue = body;
             settings.ApplyModifiedPropertiesWithoutUndo();
 
-            // Existing text in the scene switches to Noto.
             int count = 0;
             foreach (var text in Object.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             {
-                text.font = regular;
-                // Noto's tall line spacing sits text low in its box; centre on the letters instead.
+                bool isDisplay = System.Array.IndexOf(DisplayNames, text.name) >= 0;
+                text.font = isDisplay ? display : body;
+                if (isDisplay) text.fontStyle &= ~FontStyles.Bold; // the face is already bold
                 if (text.alignment == TextAlignmentOptions.Center)
                     text.alignment = TextAlignmentOptions.CenterGeoAligned;
                 EditorUtility.SetDirty(text);
                 count++;
             }
 
+            // Prefabs too (scene copies are already done above).
+            foreach (var guid in AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/_Project/Prefabs" }))
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var root = PrefabUtility.LoadPrefabContents(path);
+                foreach (var text in root.GetComponentsInChildren<TMP_Text>(true))
+                {
+                    bool isDisplay = System.Array.IndexOf(DisplayNames, text.name) >= 0;
+                    text.font = isDisplay ? display : body;
+                }
+                PrefabUtility.SaveAsPrefabAsset(root, path);
+                PrefabUtility.UnloadPrefabContents(root);
+            }
+
             AssetDatabase.SaveAssets();
-            var scene = EditorSceneManager.GetActiveScene();
-            EditorSceneManager.MarkSceneDirty(scene);
-            EditorSceneManager.SaveScene(scene);
-            Debug.Log("[Itan] Yoruba font applied to " + count + " text objects.");
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveOpenScenes();
+            Debug.Log("[Itan] Story fonts applied to " + count + " text objects.");
         }
 
         static TMP_FontAsset GetOrCreate(string ttfPath, string assetPath)

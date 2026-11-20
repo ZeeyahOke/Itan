@@ -123,7 +123,7 @@ namespace Itan.EditorTools
             text.alignment = TextAlignmentOptions.Center;
             text.color = new Color(1f, 0.92f, 0.7f);
             text.rectTransform.sizeDelta = new Vector2(1.2f, 0.4f);
-            var font = AssetDatabase.FindAssets("t:TMP_FontAsset NotoSans-Bold").Select(AssetDatabase.GUIDToAssetPath)
+            var font = AssetDatabase.FindAssets("t:TMP_FontAsset AlegreyaSans-Bold").Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<TMP_FontAsset>).FirstOrDefault();
             if (font != null) text.font = font;
             go.SetActive(false);

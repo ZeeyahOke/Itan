@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 299515d8d66314e15be1e651bdecacad
+guid: 9455b9241ba8c4a34b4470017001d5b8
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Noto Sans
+  - Alegreya Sans
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

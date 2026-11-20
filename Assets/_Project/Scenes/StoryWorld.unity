@@ -5808,8 +5808,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Grip the rope and pull down\nto climb after Aj\xE1"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 93d5d52022cc74485aa54977cbe2086a, type: 2}
-  m_sharedMaterial: {fileID: 6256087605153918456, guid: 93d5d52022cc74485aa54977cbe2086a, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a6207b11d8af9477bb325c18b6cf3bbf, type: 2}
+  m_sharedMaterial: {fileID: -5182714305137604541, guid: a6207b11d8af9477bb325c18b6cf3bbf, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5840,7 +5840,7 @@ MonoBehaviour:
   m_fontSizeMin: 0
   m_fontSizeMax: 0
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 32
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -5906,7 +5906,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6256087605153918456, guid: 93d5d52022cc74485aa54977cbe2086a, type: 2}
+  - {fileID: -5182714305137604541, guid: a6207b11d8af9477bb325c18b6cf3bbf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

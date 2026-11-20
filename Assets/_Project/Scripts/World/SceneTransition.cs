@@ -112,8 +112,17 @@ namespace Itan.World
                 }
             }
             else if (story) Debug.LogWarning("[Transition] Story world isn't loaded yet.");
+            // Back at the fire, the visitor is always in their seat (even if they left from the cloud).
+            if (!story && InStory)
+            {
+                var seat = FindFirstObjectByType<Itan.Player.SeatRecenter>();
+                if (seat != null) seat.RecenterNow();
+            }
             InStory = story;
         }
+
+        public IEnumerator FadeOut() => Fade(0f, 1f);
+        public IEnumerator FadeIn() => Fade(1f, 0f);
 
         IEnumerator Fade(float from, float to)
         {

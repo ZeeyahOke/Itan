@@ -30,6 +30,9 @@ namespace Itan.Player
             Apply();
         }
 
+        /// <summary>Recenter straight away (the headset is already tracking).</summary>
+        public void RecenterNow() => Apply();
+
         void Apply()
         {
             Transform head = origin.Camera.transform;

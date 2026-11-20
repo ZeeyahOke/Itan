@@ -21,6 +21,8 @@ namespace Itan.Story
         // The key moments live in the StoryWorld scene; StoryWorldRoot hands them over once it loads.
         static IReadOnlyList<MonoBehaviour> KeyMoments =>
             StoryWorldRoot.Current != null ? StoryWorldRoot.Current.KeyMoments : Array.Empty<MonoBehaviour>();
+        static IReadOnlyList<MonoBehaviour> BeatIntros =>
+            StoryWorldRoot.Current != null ? StoryWorldRoot.Current.BeatIntros : Array.Empty<MonoBehaviour>();
 
         /// <summary>A new beat is starting. Arguments: the beat and its 0-based index.</summary>
         public event Action<StoryBeat, int> BeatStarted;
@@ -58,6 +60,10 @@ namespace Itan.Story
                 Debug.Log("[Story] Beat " + beat.beatNumber + ": " + beat.title);
                 BeatStarted?.Invoke(beat, i);
 
+                var intros = BeatIntros;
+                if (i < intros.Count && intros[i] is IKeyMoment intro)
+                    yield return intro.Play();
+
                 yield return Narrate(beat.narration);
 
                 var moments = KeyMoments;
@@ -81,6 +87,8 @@ namespace Itan.Story
         {
             foreach (var m in KeyMoments)
                 if (m is IKeyMoment moment) moment.ResetMoment();
+            foreach (var m in BeatIntros)
+                if (m is IKeyMoment intro) intro.ResetMoment();
         }
 
         IEnumerator Narrate(IList<NarrationLine> lines)

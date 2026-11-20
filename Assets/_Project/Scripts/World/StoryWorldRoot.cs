@@ -19,7 +19,11 @@ namespace Itan.World
         [Tooltip("One key moment per beat, in beat order. Each must implement IKeyMoment.")]
         [SerializeField] MonoBehaviour[] keyMoments = new MonoBehaviour[0];
 
+        [Tooltip("Optional, per beat: plays before the beat's narration (e.g. returning the visitor to the ground).")]
+        [SerializeField] MonoBehaviour[] beatIntros = new MonoBehaviour[0];
+
         public IReadOnlyList<MonoBehaviour> KeyMoments => keyMoments;
+        public IReadOnlyList<MonoBehaviour> BeatIntros => beatIntros;
 
         public void Show(bool visible) => content.SetActive(visible);
 

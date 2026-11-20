@@ -20,6 +20,7 @@ namespace Itan.Session.States
         public void Enter()
         {
             Debug.Log("[Session] Enter QuizState");
+            session.Status.HideLabel();
             session.Narration.Play(session.Closing.quizIntro, () =>
             {
                 if (IsCurrent) session.Quiz.Run(OnQuizDone);

@@ -56,6 +56,9 @@ namespace Itan.UI
             wordLabel.text = collected + " of " + total + " words";
         }
 
+        /// <summary>The story is over: hide the label (the calabash keeps its fill).</summary>
+        public void HideLabel() => panel.SetActive(false);
+
         public void ResetStatus()
         {
             collected = 0;

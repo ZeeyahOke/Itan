@@ -38,7 +38,15 @@ namespace Itan.EditorTools
             var climb = moments.GetComponent<ClimbMoment>();
             var fall = moments.GetComponent<FallMoment>();
             Set(climb, "walkSeconds", 1.6f); Set(climb, "climbSeconds", 4.5f);
-            Set(fall, "walkSeconds", 3.2f); Set(fall, "climbSeconds", 2.4f);
+            Set(fall, "walkSeconds", 3.8f); Set(fall, "climbSeconds", 2.4f);
+            SetRef(fall, "ropeDrop", rope);
+
+            // Ìjàpá hides forward and to the left, clear of Ajá's way to the rope.
+            var ijapaT = StoryScenes.Find("Ijapa").transform;
+            ijapaT.position = StoryWorldDresser.IjapaHide;
+            var toRope = StoryWorldBuilder.RopeBottom - ijapaT.position; toRope.y = 0f;
+            ijapaT.rotation = Quaternion.Slerp(Quaternion.LookRotation(toRope), Quaternion.LookRotation(Vector3.back), 0.45f);
+            var cloudSea = StoryScenes.Find("CloudSea");
 
             // Beat 2 extras.
             var feast = Child<FeastMoment>(moments, "Feast");
@@ -54,6 +62,7 @@ namespace Itan.EditorTools
             SetRef(playerClimb, "leftGrip", Action("XRI Left Interaction/Select Value"));
             SetRef(playerClimb, "rightGrip", Action("XRI Right Interaction/Select Value"));
             SetRef(playerClimb, "prompt", ClimbPrompt(moments, baseMarker));
+            SetRef(playerClimb, "cloudSea", cloudSea);
 
             var beat2 = Child<SequenceMoment>(moments, "Beat2_ClimbAndFeast");
             var so = new SerializedObject(beat2);
@@ -65,6 +74,8 @@ namespace Itan.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
 
             var back = Child<ReturnToGroundMoment>(moments, "Beat3_BackToGround");
+            SetRef(back, "rope", rope);
+            SetRef(back, "cloudSea", cloudSea);
 
             var root = Object.FindFirstObjectByType<StoryWorldRoot>(FindObjectsInactive.Include);
             var rso = new SerializedObject(root);

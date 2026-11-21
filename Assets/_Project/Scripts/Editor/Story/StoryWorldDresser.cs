@@ -26,6 +26,8 @@ namespace Itan.EditorTools
         public static readonly Vector3 FeastCentre = new Vector3(0f, CloudTop, 9.5f);
         public static readonly Vector3 MotherSeat = new Vector3(1.3f, CloudTop, 10.1f);
         public static readonly Vector3 AjaSeat = new Vector3(-1.3f, CloudTop, 9.9f);
+        /// <summary>Where Ìjàpá crouches, hidden from Ajá but in view of the visitor.</summary>
+        public static readonly Vector3 IjapaHide = new Vector3(-2.7f, 0f, 4.6f);
 
         static System.Random rng = new System.Random(11);
 
@@ -159,9 +161,10 @@ namespace Itan.EditorTools
                 if (Mathf.Abs(p.x) < 1.4f && p.z < 8f) continue; // keep the path and rope clear
                 Place(i % 2 == 0 ? "Grass_Wispy_Short" : "Grass_Wispy_Tall", land, p, Rand(0f, 360f), Rand(0.9f, 1.4f), dry);
             }
-            var hide = Group("LongGrass", land, new Vector3(-2.9f, 0f, 5.9f));
-            for (int i = 0; i < 14; i++)
-                Place("Grass_Wispy_Tall", hide, hide.position + new Vector3(Rand(-0.8f, 0.8f), 0f, Rand(-0.5f, 0.6f)), Rand(0f, 360f), Rand(1.4f, 2.0f), dry);
+            // Ìjàpá's long grass sits forward and to the left, well clear of Ajá's way to the rope.
+            var hide = Group("LongGrass", land, IjapaHide + new Vector3(-0.25f, 0f, 0.5f));
+            for (int i = 0; i < 16; i++)
+                Place("Grass_Wispy_Tall", hide, hide.position + new Vector3(Rand(-0.9f, 0.9f), 0f, Rand(-0.25f, 0.45f)), Rand(0f, 360f), Rand(1.4f, 2.0f), dry);
         }
 
         // ---------------- Rope spot ----------------
@@ -196,6 +199,11 @@ namespace Itan.EditorTools
                 var s = front ? new Vector3(2.2f, 0.6f, 1.6f) : new Vector3(Rand(2f, 3.4f), Rand(1.1f, 1.9f), Rand(1.8f, 2.8f));
                 Puff(home, "Puff_" + i, p, s, cloud);
             }
+            // The sea of cloud all around, only shown while the visitor is up here.
+            var sea = MeshObject("CloudSea", home, ProcMesh.CloudSea(5.5f, CloudTop - 0.35f), cloud, new Vector3(CloudCentre.x, 0f, CloudCentre.z), 0f, 1f);
+            sea.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            sea.gameObject.SetActive(false);
+
             // Puffs drifting below, seen from the ground.
             for (int i = 0; i < 9; i++)
                 Puff(home, "Lower_" + i, CloudCentre + new Vector3(Rand(-4f, 4f), Rand(-1.1f, -0.6f), Rand(-2.5f, 3f)), new Vector3(Rand(1.6f, 2.8f), Rand(0.7f, 1.1f), Rand(1.4f, 2.2f)), cloud);

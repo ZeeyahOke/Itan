@@ -74,6 +74,45 @@ namespace Itan.EditorTools
             return Lathe("CalabashBowl", p);
         }
 
+        /// <summary>
+        /// A rolling sea of cloud, 240 m across, seen when the visitor is up on the cloud.
+        /// Flat and low near the middle (under the island), billowing higher further out.
+        /// </summary>
+        public static Mesh CloudSea(float islandRadius, float lowY)
+        {
+            var path = $"{Dir}/CloudSea.asset";
+            AssetDatabase.DeleteAsset(path);
+            const int n = 110; const float size = 240f;
+            var verts = new Vector3[(n + 1) * (n + 1)];
+            var uvs = new Vector2[verts.Length];
+            for (int z = 0; z <= n; z++)
+                for (int x = 0; x <= n; x++)
+                {
+                    float px = (x / (float)n - 0.5f) * size, pz = (z / (float)n - 0.5f) * size;
+                    float d = Mathf.Sqrt(px * px + pz * pz);
+                    float grow = Mathf.Clamp01((d - islandRadius) / 30f);
+                    float billow = Mathf.PerlinNoise(px * 0.07f + 3f, pz * 0.07f + 7f) * 1.2f
+                                 + Mathf.PerlinNoise(px * 0.2f + 11f, pz * 0.2f + 5f) * 0.45f;
+                    float y = lowY + billow * (0.25f + grow * 1.6f) - 0.15f;
+                    verts[z * (n + 1) + x] = new Vector3(px, y, pz);
+                    uvs[z * (n + 1) + x] = new Vector2(x / (float)n, z / (float)n);
+                }
+            var tris = new int[n * n * 6];
+            int t = 0;
+            for (int z = 0; z < n; z++)
+                for (int x = 0; x < n; x++)
+                {
+                    int a = z * (n + 1) + x, b = a + n + 1;
+                    tris[t++] = a; tris[t++] = b; tris[t++] = a + 1;
+                    tris[t++] = a + 1; tris[t++] = b; tris[t++] = b + 1;
+                }
+            var mesh = new Mesh { name = "CloudSea", indexFormat = UnityEngine.Rendering.IndexFormat.UInt32, vertices = verts, uv = uvs, triangles = tris };
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            AssetDatabase.CreateAsset(mesh, path);
+            return mesh;
+        }
+
         /// <summary>A carved round Yoruba stool, about 0.33 m tall: wide seat, narrow waist, round foot.</summary>
         public static Mesh CarvedStool() => Lathe("CarvedStool", new[]
         {

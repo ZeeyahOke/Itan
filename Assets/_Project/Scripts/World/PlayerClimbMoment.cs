@@ -30,6 +30,8 @@ namespace Itan.World
         [Tooltip("Climb automatically if there's been no progress for this long.")]
         [SerializeField] float autoClimbAfter = 30f;
         [SerializeField] GameObject prompt;
+        [Tooltip("The sea of cloud around the sky home, shown only while the visitor is up there.")]
+        [SerializeField] GameObject cloudSea;
 
         /// <summary>Editor/testing: climb without hands.</summary>
         public static bool DebugAutoClimb;
@@ -67,6 +69,9 @@ namespace Itan.World
 
             yield return FadeOut();
             PlaceEye(ropeBase.position, ropeBase.forward);
+            var space = Itan.Player.VisitorSpace.Instance;
+            float originStartY = origin.transform.position.y;
+            if (space != null) space.MoveTo(ropeBase.position, ropeBase.forward);
             if (prompt != null) prompt.SetActive(true);
             yield return FadeIn();
 
@@ -74,7 +79,7 @@ namespace Itan.World
             float lastProgress = Time.time, best = Head.y;
             while (Head.y < finishHeight)
             {
-                if (DebugAutoClimb || Time.time - lastProgress > autoClimbAfter) { yield return AutoClimb(); break; }
+                if (DebugAutoClimb || Time.time - lastProgress > autoClimbAfter) { yield return AutoClimb(originStartY); break; }
 
                 float lift = 0f;
                 foreach (var h in hands) lift += h.Update(origin, rope.position, grabReach);
@@ -83,23 +88,28 @@ namespace Itan.World
                 if (Head.y < ropeBase.position.y) origin.transform.position += Vector3.up * (ropeBase.position.y - Head.y);
 
                 if (Head.y > best + 0.05f) { best = Head.y; lastProgress = Time.time; }
+                if (space != null) space.MoveTo(ropeBase.position + Vector3.up * (origin.transform.position.y - originStartY), ropeBase.forward);
                 yield return null;
             }
 
             if (prompt != null) prompt.SetActive(false);
             yield return FadeOut();
             PlaceEye(skyViewpoint.position + Vector3.up * seatedEyeHeight, skyViewpoint.forward);
+            if (cloudSea != null) cloudSea.SetActive(true);
+            if (space != null) space.MoveTo(skyViewpoint.position + Vector3.up * seatedEyeHeight, skyViewpoint.forward);
             yield return FadeIn();
             IsClimbing = false;
         }
 
-        IEnumerator AutoClimb()
+        IEnumerator AutoClimb(float originStartY)
         {
             float from = Head.y;
+            var space = Itan.Player.VisitorSpace.Instance;
             for (float t = 0f; t < 3f; t += Time.deltaTime)
             {
                 float y = Mathf.Lerp(from, finishHeight + 0.01f, Mathf.SmoothStep(0f, 1f, t / 3f));
                 origin.transform.position += Vector3.up * (y - Head.y);
+                if (space != null) space.MoveTo(ropeBase.position + Vector3.up * (origin.transform.position.y - originStartY), ropeBase.forward);
                 yield return null;
             }
         }
@@ -123,6 +133,7 @@ namespace Itan.World
             StopAllCoroutines();
             IsClimbing = false;
             if (prompt != null) prompt.SetActive(false);
+            if (cloudSea != null) cloudSea.SetActive(false);
         }
 
         /// <summary>One hand on the rope: while gripping near it, pulling down lifts the visitor.</summary>

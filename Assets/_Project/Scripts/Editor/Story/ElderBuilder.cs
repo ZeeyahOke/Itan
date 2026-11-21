@@ -109,24 +109,36 @@ namespace Itan.EditorTools
             return c;
         }
 
+        /// <summary>
+        /// Fila resting on the crown (placed from the rig's head-top bone), then attached
+        /// to the head bone so it moves with him.
+        /// </summary>
         static void Fila(Animator animator)
         {
             var head = animator.GetBoneTransform(HumanBodyBones.Head);
             if (head == null) return;
-            float s = 1f / head.lossyScale.x;
+            // Mixamo rigs have a bone exactly at the top of the skull.
+            Transform headTop = null;
+            foreach (var t in animator.GetComponentsInChildren<Transform>())
+                if (t.name.EndsWith("HeadTop_End")) { headTop = t; break; }
+            Vector3 crown = headTop != null ? headTop.position
+                                            : head.position + Vector3.up * 0.2f;
+            crown += animator.transform.forward * 0.005f;
+
             var cap = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
             Object.DestroyImmediate(cap.GetComponent<Collider>());
-            cap.name = "Fila"; cap.SetParent(head, false);
-            cap.localPosition = new Vector3(0f, 0.15f, -0.01f) * s;
-            cap.localRotation = Quaternion.Euler(-6f, 0f, 10f);
-            cap.localScale = new Vector3(0.2f, 0.06f, 0.21f) * s;
+            cap.name = "Fila";
+            cap.position = crown - Vector3.up * 0.02f;                // 7 cm tall, pulled down over the crown
+            cap.rotation = animator.transform.rotation * Quaternion.Euler(-4f, 0f, 6f);
+            cap.localScale = new Vector3(0.19f, 0.035f, 0.205f);
             cap.GetComponent<Renderer>().sharedMaterial = Flat("Char_ElderFila", new Color(0.45f, 0.1f, 0.12f), 0.3f);
             var band = GameObject.CreatePrimitive(PrimitiveType.Cylinder).transform;
             Object.DestroyImmediate(band.GetComponent<Collider>());
             band.name = "Band"; band.SetParent(cap, false);
-            band.localPosition = new Vector3(0f, -0.75f, 0f);
-            band.localScale = new Vector3(1.02f, 0.25f, 1.02f);
+            band.localPosition = new Vector3(0f, -0.8f, 0f);
+            band.localScale = new Vector3(1.03f, 0.22f, 1.03f);
             band.GetComponent<Renderer>().sharedMaterial = Flat("Char_ElderFilaBand", new Color(0.78f, 0.6f, 0.25f), 0.4f);
+            cap.SetParent(head, true);
         }
 
         static void Staff(Transform root)

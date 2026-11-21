@@ -62,6 +62,9 @@ namespace Itan.EditorTools
             foreach (var c in root.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
 
             StoryScenes.SaveAll();
+            // Moments point at markers inside the dressing (e.g. the sky viewpoint), so re-link them.
+            if (Object.FindFirstObjectByType<Itan.World.FeastMoment>(FindObjectsInactive.Include) != null)
+                StoryMomentsWiring.Wire();
             Debug.Log("[Itan] Story world dressed.");
         }
 

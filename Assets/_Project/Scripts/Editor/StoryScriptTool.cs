@@ -27,6 +27,7 @@ namespace Itan.EditorTools
         const string Sfx = "Assets/_Project/Audio/SFX/";
 
         // ---------------- The script ----------------
+        // Line(subtitle, spoken): the subtitle keeps the Yoruba words; the narrator speaks English.
 
         static void WriteOpening(OpeningScript o)
         {
@@ -34,7 +35,7 @@ namespace Itan.EditorTools
             o.bowPrompt = Line("Before a story is told, we greet our elders. Bow your head to greet me.");
             o.calabashPrompt = Line("Good. Now take this calabash. It will hold the words you learn tonight.");
             o.callIntro = Line("Every story begins with a call. When I say Àlọ́ o, you answer Ààlọ̀. Listen.",
-                               "Every story begins with a call. When I say, Ah-law oh, you answer, Ah-ah-law. Listen.");
+                               "Every story begins with a call. When I call out to you, you answer me back. Listen.");
             o.answerExample = Recorded("Ààlọ̀!", "Answer_Aalo");
             o.call = Recorded("Àlọ́ o!   (Answer: Ààlọ̀!)", "Call_AloO");
         }
@@ -45,37 +46,37 @@ namespace Itan.EditorTools
             famine.narration = Lines(
                 ("Long ago, a great famine came to the land. Every pot was empty, and every field was dry.", null),
                 ("But Ajá the dog never looked hungry. Each night he slipped away to a quiet place, and sang a secret song to his mother in the sky.",
-                 "But Ah-jah the dog never looked hungry. Each night he slipped away to a quiet place, and sang a secret song to his mother in the sky."));
+                 "But the dog never looked hungry. Each night he slipped away to a quiet place, and sang a secret song to his mother in the sky."));
             famine.afterMoment = Lines(("And down from the clouds came a rope.", null));
 
             rope.title = "The Rope to the Sky";
             rope.narration = Lines(
                 ("Ajá climbed the rope, up and up, all the way to his mother's home.",
-                 "Ah-jah climbed the rope, up and up, all the way to his mother's home."));
+                 "The dog climbed the rope, up and up, all the way to his mother's home."));
             rope.afterMoment = Lines(
                 ("His mother, his ìyá, fed him well, and every morning he came home strong.",
-                 "His mother, his ee-yah, fed him well, and every morning he came home strong."));
+                 "His mother fed him well, and every morning he came home strong."));
 
             fall.title = "Ìjàpá Falls";
             fall.narration = Lines(
                 ("Ìjàpá the tortoise was curious. Why was Ajá so strong, when everyone else was hungry?",
-                 "Ee-jah-pah the tortoise was curious. Why was Ah-jah so strong, when everyone else was hungry?"),
+                 "The tortoise was curious. Why was the dog so strong, when everyone else was hungry?"),
                 ("One night he followed Ajá, hid in the long grass, and heard the secret song. The next night, Ìjàpá sang it himself.",
-                 "One night he followed Ah-jah, hid in the long grass, and heard the secret song. The next night, Ee-jah-pah sang it himself."));
+                 "One night he followed the dog, hid in the long grass, and heard the secret song. The next night, the tortoise sang it himself."));
             fall.afterMoment = Lines(
                 ("But Ajá's mother knew her son's voice. When the tortoise was halfway up, she cut the rope.",
-                 "But Ah-jah's mother knew her son's voice. When the tortoise was halfway up, she cut the rope."),
+                 "But the dog's mother knew her son's voice. When the tortoise was halfway up, she cut the rope."),
                 ("Down fell Ìjàpá, and his shell cracked into pieces.",
-                 "Down fell Ee-jah-pah, and his shell cracked into pieces."));
+                 "Down fell the tortoise, and his shell cracked into pieces."));
         }
 
         static void WriteClosing(ClosingScript c)
         {
             c.quizIntro = Line("Now, let us see what is in your calabash. Listen to each word, and choose the card that matches.");
             c.lesson = Line("And that, my child, is why Ìjàpá's shell is cracked to this day. Being curious is good, but taking what is not yours will always let you fall.",
-                            "And that, my child, is why Ee-jah-pah's shell is cracked to this day. Being curious is good, but taking what is not yours will always let you fall.");
+                            "And that, my child, is why the tortoise's shell is cracked to this day. Being curious is good, but taking what is not yours will always let you fall.");
             c.farewell = Line("You carry three new words home tonight: ajá, ìyá and ìjàpá. Ó dàbọ̀, go well.",
-                              "You carry three new words home tonight: ah-jah, ee-yah, and ee-jah-pah. Oh dah-baw, go well.");
+                              "You carry three new words home tonight: dog, mother, and tortoise. Goodbye, go well.");
         }
 
         // ---------------- Apply ----------------

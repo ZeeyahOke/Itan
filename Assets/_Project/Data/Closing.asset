@@ -22,12 +22,12 @@ MonoBehaviour:
     subtitle: "And that, my child, is why \xCCj\xE0p\xE1's shell is cracked to this
       day. Being curious is good, but taking what is not yours will always let you
       fall."
-    spokenText: And that, my child, is why Ee-jah-pah's shell is cracked to this
+    spokenText: And that, my child, is why the tortoise's shell is cracked to this
       day. Being curious is good, but taking what is not yours will always let you
       fall.
   farewell:
     clip: {fileID: 8300000, guid: 795784703171643429fad9681f01b60d, type: 3}
     subtitle: "You carry three new words home tonight: aj\xE1, \xECy\xE1 and \xECj\xE0p\xE1.
       \xD3 d\xE0b\u1ECD\u0300, go well."
-    spokenText: 'You carry three new words home tonight: ah-jah, ee-yah, and ee-jah-pah.
-      Oh dah-baw, go well.'
+    spokenText: 'You carry three new words home tonight: dog, mother, and tortoise.
+      Goodbye, go well.'

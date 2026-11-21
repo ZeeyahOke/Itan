@@ -9,11 +9,16 @@ using Debug = UnityEngine.Debug;
 namespace Itan.EditorTools
 {
     /// <summary>
-    /// Generates the elder's narration with the Mac's built-in speech engine
-    /// (the "say" command), so the story is voice acted end to end. Lines that
-    /// already use F's real recordings (the words, the call, the answer) are
-    /// left alone. Re-run after changing the script to regenerate.
-    /// Menu: Itan > Narrator > Generate Narration
+    /// The elder's narration. The spoken lines are English; the Yoruba words live in the
+    /// subtitles and in F's own recordings (the words, the call, the answer, the songs),
+    /// which are left alone.
+    ///
+    /// Two ways to make the audio:
+    ///   Neural voice (used now): Itan > Narrator > Export Narration Script writes
+    ///   Logs/narration_script.json; Kokoro (Apache 2.0, voice bm_george)
+    ///   speaks it into Audio/Narration; then Itan > Narrator >
+    ///   Link Narration Clips points each line at its file.
+    ///   Quick fallback: Itan > Narrator > Generate Narration uses the Mac's "say" voice.
     /// </summary>
     public static class NarratorVoiceTool
     {
@@ -38,8 +43,35 @@ namespace Itan.EditorTools
         public static void Generate()
         {
             Directory.CreateDirectory(OutFolder);
-            var jobs = new List<(Object asset, NarrationLine line, string file)>();
+            var jobs = Jobs();
 
+            // 1. Speak every line to a WAV file.
+            string textFile = Path.Combine("Temp", "itan_say.txt");
+            foreach (var job in jobs)
+            {
+                string text = Spoken(job.line);
+                File.WriteAllText(textFile, text);
+                string wav = Path.GetFullPath(Path.Combine(OutFolder, job.file + ".wav"));
+                Run("/usr/bin/say", "-v \"" + VoiceName + "\" -r " + WordsPerMinute +
+                    " --file-format=WAVE --data-format=LEI16@44100 -o \"" + wav + "\" -f \"" + Path.GetFullPath(textFile) + "\"");
+            }
+
+            // 2. Import them and point each line at its new clip.
+            AssetDatabase.Refresh();
+            foreach (var job in jobs)
+            {
+                job.line.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(OutFolder + "/" + job.file + ".wav");
+                if (job.line.clip == null) Debug.LogWarning("[Narrator] No clip for " + job.file);
+                EditorUtility.SetDirty(job.asset);
+            }
+            AssetDatabase.SaveAssets();
+            StoryScriptTool.ApplyImportSettings();
+            Debug.Log("[Narrator] Generated " + jobs.Count + " narration lines with the voice " + VoiceName);
+        }
+
+        static List<(Object asset, NarrationLine line, string file)> Jobs()
+        {
+            var jobs = new List<(Object asset, NarrationLine line, string file)>();
             var opening = AssetDatabase.LoadAssetAtPath<OpeningScript>(Data + "Opening.asset");
             Add(jobs, opening, opening.welcome, "Opening_Welcome");
             Add(jobs, opening, opening.bowPrompt, "Opening_Bow");
@@ -59,20 +91,31 @@ namespace Itan.EditorTools
             Add(jobs, closing, closing.quizIntro, "Closing_QuizIntro");
             Add(jobs, closing, closing.lesson, "Closing_Lesson");
             Add(jobs, closing, closing.farewell, "Closing_Farewell");
+            return jobs;
+        }
 
-            // 1. Speak every line to a WAV file.
-            string textFile = Path.Combine("Temp", "itan_say.txt");
-            foreach (var job in jobs)
-            {
-                string text = string.IsNullOrWhiteSpace(job.line.spokenText) ? job.line.subtitle : job.line.spokenText;
-                File.WriteAllText(textFile, text);
-                string wav = Path.GetFullPath(Path.Combine(OutFolder, job.file + ".wav"));
-                Run("/usr/bin/say", "-v \"" + VoiceName + "\" -r " + WordsPerMinute +
-                    " --file-format=WAVE --data-format=LEI16@44100 -o \"" + wav + "\" -f \"" + Path.GetFullPath(textFile) + "\"");
-            }
+        static string Spoken(NarrationLine line) => string.IsNullOrWhiteSpace(line.spokenText) ? line.subtitle : line.spokenText;
 
-            // 2. Import them and point each line at its new clip.
+        /// <summary>Writes every narrated line (file name and what is spoken) for an external voice.</summary>
+        [MenuItem("Itan/Narrator/Export Narration Script")]
+        public static void Export()
+        {
+            var sb = new System.Text.StringBuilder("[\n");
+            var jobs = Jobs();
+            for (int i = 0; i < jobs.Count; i++)
+                sb.Append("  {\"file\": \"" + jobs[i].file + "\", \"text\": \"" + Spoken(jobs[i].line).Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}" + (i < jobs.Count - 1 ? ",\n" : "\n"));
+            sb.Append("]\n");
+            Directory.CreateDirectory("Logs");
+            File.WriteAllText("Logs/narration_script.json", sb.ToString());
+            Debug.Log("[Narrator] Exported " + jobs.Count + " lines to Logs/narration_script.json");
+        }
+
+        /// <summary>Points each narrated line at the WAV of the same name in Audio/Narration.</summary>
+        [MenuItem("Itan/Narrator/Link Narration Clips")]
+        public static void Link()
+        {
             AssetDatabase.Refresh();
+            var jobs = Jobs();
             foreach (var job in jobs)
             {
                 job.line.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(OutFolder + "/" + job.file + ".wav");
@@ -81,7 +124,7 @@ namespace Itan.EditorTools
             }
             AssetDatabase.SaveAssets();
             StoryScriptTool.ApplyImportSettings();
-            Debug.Log("[Narrator] Generated " + jobs.Count + " narration lines with the voice " + VoiceName);
+            Debug.Log("[Narrator] Linked " + jobs.Count + " narration clips.");
         }
 
         // Only lines that don't already use one of F's recordings.

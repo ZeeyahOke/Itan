@@ -22,8 +22,8 @@ MonoBehaviour:
   - clip: {fileID: 8300000, guid: 8cc63562d90f0451a8be89bd25ceb3b5, type: 3}
     subtitle: "But Aj\xE1 the dog never looked hungry. Each night he slipped away
       to a quiet place, and sang a secret song to his mother in the sky."
-    spokenText: But Ah-jah the dog never looked hungry. Each night he slipped away
-      to a quiet place, and sang a secret song to his mother in the sky.
+    spokenText: But the dog never looked hungry. Each night he slipped away to a
+      quiet place, and sang a secret song to his mother in the sky.
   afterMoment:
   - clip: {fileID: 8300000, guid: b1dff16e3986347aeb2c342d1e11437c, type: 3}
     subtitle: And down from the clouds came a rope.

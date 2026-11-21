@@ -29,8 +29,8 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: c5cad7f13aafb429388de1b1a9cc9c15, type: 3}
     subtitle: "Every story begins with a call. When I say \xC0l\u1ECD\u0301 o, you
       answer \xC0\xE0l\u1ECD\u0300. Listen."
-    spokenText: Every story begins with a call. When I say, Ah-law oh, you answer,
-      Ah-ah-law. Listen.
+    spokenText: Every story begins with a call. When I call out to you, you answer
+      me back. Listen.
   answerExample:
     clip: {fileID: 8300000, guid: 9b6099363899c46dca27e16064c9d4ac, type: 3}
     subtitle: "\xC0\xE0l\u1ECD\u0300!"

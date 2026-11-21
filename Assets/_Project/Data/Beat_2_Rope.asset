@@ -17,11 +17,11 @@ MonoBehaviour:
   narration:
   - clip: {fileID: 8300000, guid: 6af8931ea9f644ecfab299bb39e906cf, type: 3}
     subtitle: "Aj\xE1 climbed the rope, up and up, all the way to his mother's home."
-    spokenText: Ah-jah climbed the rope, up and up, all the way to his mother's home.
+    spokenText: The dog climbed the rope, up and up, all the way to his mother's
+      home.
   afterMoment:
   - clip: {fileID: 8300000, guid: e8d708327b86349b091279186b75a391, type: 3}
     subtitle: "His mother, his \xECy\xE1, fed him well, and every morning he came
       home strong."
-    spokenText: His mother, his ee-yah, fed him well, and every morning he came home
-      strong.
+    spokenText: His mother fed him well, and every morning he came home strong.
   wordCard: {fileID: 11400000, guid: d829b5e19a07e4771bf93190f6bf8b7a, type: 2}

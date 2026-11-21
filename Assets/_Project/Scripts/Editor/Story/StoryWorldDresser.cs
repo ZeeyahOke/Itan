@@ -27,7 +27,9 @@ namespace Itan.EditorTools
         public static readonly Vector3 MotherSeat = new Vector3(1.3f, CloudTop, 10.1f);
         public static readonly Vector3 AjaSeat = new Vector3(-1.3f, CloudTop, 9.9f);
 
-        static System.Random rng;
+        static System.Random rng = new System.Random(11);
+
+        public static void Seed(int seed) => rng = new System.Random(seed);
 
         [MenuItem("Itan/Story/Dress Story World")]
         public static void Dress()
@@ -102,7 +104,7 @@ namespace Itan.EditorTools
             }
         }
 
-        static Transform Hut(string name, Transform parent, Vector3 pos, float radius, float yaw)
+        public static Transform Hut(string name, Transform parent, Vector3 pos, float radius, float yaw)
         {
             var hut = Group(name, parent, pos);
             hut.localRotation = Quaternion.Euler(0f, yaw, 0f);
@@ -254,7 +256,7 @@ namespace Itan.EditorTools
         }
 
         /// <summary>Place a model scaled so its longest side is <paramref name="size"/> metres, resting on its base.</summary>
-        static Transform Sized(string model, Transform parent, Vector3 worldPos, float yaw, float size)
+        public static Transform Sized(string model, Transform parent, Vector3 worldPos, float yaw, float size)
         {
             var t = Place(model, parent, worldPos, yaw, 1f);
             if (t == null) return null;
@@ -298,7 +300,7 @@ namespace Itan.EditorTools
 
         // ---------------- Helpers ----------------
 
-        static float Rand(float a, float b) => a + (float)rng.NextDouble() * (b - a);
+        public static float Rand(float a, float b) => a + (float)rng.NextDouble() * (b - a);
 
         static Vector3 OnRing(float radius, float degrees)
         {
@@ -312,7 +314,7 @@ namespace Itan.EditorTools
             return Mathf.Atan2(d.x, d.z) * Mathf.Rad2Deg;
         }
 
-        static Transform Group(string name, Transform parent, Vector3 worldPos)
+        public static Transform Group(string name, Transform parent, Vector3 worldPos)
         {
             var t = new GameObject(name).transform;
             t.SetParent(parent, false);
@@ -327,7 +329,7 @@ namespace Itan.EditorTools
             t.rotation = Quaternion.LookRotation(d);
         }
 
-        static Transform MeshObject(string name, Transform parent, Mesh mesh, Material mat, Vector3 pos, float yaw, float scale)
+        public static Transform MeshObject(string name, Transform parent, Mesh mesh, Material mat, Vector3 pos, float yaw, float scale)
         {
             var go = new GameObject(name, typeof(MeshFilter), typeof(MeshRenderer));
             go.transform.SetParent(parent, false);
@@ -354,7 +356,7 @@ namespace Itan.EditorTools
             return model;
         }
 
-        static Transform Place(string model, Transform parent, Vector3 worldPos, float yaw, float scale, Material overrideMat = null)
+        public static Transform Place(string model, Transform parent, Vector3 worldPos, float yaw, float scale, Material overrideMat = null)
         {
             var prefab = Model(model);
             if (prefab == null) return null;
@@ -365,10 +367,53 @@ namespace Itan.EditorTools
             if (overrideMat != null)
                 foreach (var r in go.GetComponentsInChildren<Renderer>())
                     r.sharedMaterials = Enumerable.Repeat(overrideMat, r.sharedMaterials.Length).ToArray();
+            else FixCutouts(go);
             return go.transform;
         }
 
         // ---------------- Materials ----------------
+
+        /// <summary>
+        /// Leaves and grass come in with see-through textures but opaque materials (black blocks).
+        /// Swap in a saved copy with alpha clipping for any material whose texture has alpha.
+        /// </summary>
+        static void FixCutouts(GameObject go)
+        {
+            foreach (var r in go.GetComponentsInChildren<Renderer>())
+            {
+                var mats = r.sharedMaterials;
+                bool changed = false;
+                for (int i = 0; i < mats.Length; i++)
+                {
+                    var m = mats[i];
+                    if (m == null || !m.HasProperty("_BaseMap")) continue;
+                    var tex = m.GetTexture("_BaseMap") as Texture2D;
+                    if (tex == null || !GraphicsFormatUtilityHasAlpha(tex)) continue;
+                    if (m.IsKeywordEnabled("_ALPHATEST_ON")) continue;
+                    var path = $"{MatDir}/Cutout_{m.name.Replace("/", "_")}.mat";
+                    var cut = AssetDatabase.LoadAssetAtPath<Material>(path);
+                    if (cut == null)
+                    {
+                        cut = new Material(m);
+                        cut.SetFloat("_AlphaClip", 1f);
+                        cut.SetFloat("_Cutoff", 0.5f);
+                        cut.EnableKeyword("_ALPHATEST_ON");
+                        cut.SetFloat("_Cull", 0f); // leaves are single planes: show both sides
+                        cut.renderQueue = (int)UnityEngine.Rendering.RenderQueue.AlphaTest;
+                        AssetDatabase.CreateAsset(cut, path);
+                    }
+                    mats[i] = cut; changed = true;
+                }
+                if (changed) r.sharedMaterials = mats;
+            }
+        }
+
+        static bool GraphicsFormatUtilityHasAlpha(Texture2D tex)
+        {
+            var path = AssetDatabase.GetAssetPath(tex);
+            var imp = AssetImporter.GetAtPath(path) as TextureImporter;
+            return imp != null ? imp.DoesSourceTextureHaveAlpha() : UnityEngine.Experimental.Rendering.GraphicsFormatUtility.HasAlphaChannel(tex.graphicsFormat);
+        }
 
         static Material Save(string name, Material m)
         {
@@ -410,12 +455,12 @@ namespace Itan.EditorTools
             return Save(name, m);
         }
 
-        static Material Clay() => TexMat("Story_ClayWall", "clay_plaster", 1f, new Color(0.92f, 0.66f, 0.5f), new Vector2(3f, 1f));
-        static Material Thatch() => TexMat("Story_Thatch", "thatch_roof_angled", 1f, new Color(1f, 0.88f, 0.66f), new Vector2(3f, 1.2f));
-        static Material Terracotta() => TexMat("Story_Terracotta", "clay_plaster", 1f, new Color(0.86f, 0.46f, 0.3f), new Vector2(2f, 1f));
-        static Material CalabashMat() => Flat("Story_Calabash", new Color(0.78f, 0.56f, 0.28f), 0.25f);
+        public static Material Clay() => TexMat("Story_ClayWall", "clay_plaster", 1f, new Color(0.92f, 0.66f, 0.5f), new Vector2(3f, 1f));
+        public static Material Thatch() => TexMat("Story_Thatch", "thatch_roof_angled", 1f, new Color(1f, 0.88f, 0.66f), new Vector2(3f, 1.2f));
+        public static Material Terracotta() => TexMat("Story_Terracotta", "clay_plaster", 1f, new Color(0.86f, 0.46f, 0.3f), new Vector2(2f, 1f));
+        public static Material CalabashMat() => Flat("Story_Calabash", new Color(0.78f, 0.56f, 0.28f), 0.25f);
 
-        static Material DryGrass()
+        public static Material DryGrass()
         {
             var src = Model("Grass_Wispy_Tall");
             var m = Lit();

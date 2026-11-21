@@ -81,6 +81,27 @@ namespace Itan.EditorTools
             new Vector2(0.09f, 0.25f), new Vector2(0.18f, 0.29f), new Vector2(0.185f, 0.32f), new Vector2(0.16f, 0.335f), new Vector2(0f, 0.335f),
         }, 24, 1f);
 
+        /// <summary>Wooden mortar for pounding yam, about 0.55 m tall, hollowed at the top.</summary>
+        public static Mesh Mortar() => Lathe("Mortar", new[]
+        {
+            new Vector2(0f, 0f), new Vector2(0.17f, 0f), new Vector2(0.15f, 0.06f), new Vector2(0.1f, 0.2f), new Vector2(0.12f, 0.32f),
+            new Vector2(0.2f, 0.42f), new Vector2(0.21f, 0.55f), new Vector2(0.16f, 0.55f), new Vector2(0.13f, 0.4f), new Vector2(0f, 0.38f),
+        });
+
+        /// <summary>Gúdúgúdú-style talking drum: hourglass body, about 0.5 m long (lies on its side when placed).</summary>
+        public static Mesh TalkingDrum() => Lathe("TalkingDrum", new[]
+        {
+            new Vector2(0f, 0f), new Vector2(0.13f, 0f), new Vector2(0.13f, 0.03f), new Vector2(0.075f, 0.2f), new Vector2(0.065f, 0.25f),
+            new Vector2(0.075f, 0.3f), new Vector2(0.13f, 0.47f), new Vector2(0.13f, 0.5f), new Vector2(0f, 0.5f),
+        });
+
+        /// <summary>Open woven basket, about 0.3 m tall.</summary>
+        public static Mesh Basket() => Lathe("Basket", new[]
+        {
+            new Vector2(0f, 0f), new Vector2(0.14f, 0f), new Vector2(0.2f, 0.1f), new Vector2(0.24f, 0.26f), new Vector2(0.25f, 0.3f),
+            new Vector2(0.23f, 0.3f), new Vector2(0.22f, 0.27f), new Vector2(0.18f, 0.12f), new Vector2(0f, 0.04f),
+        }, 24, 2f);
+
         /// <summary>Round mud wall of a hut, 1 m radius and 1 m tall (scale to size).</summary>
         public static Mesh HutWall() => Lathe("HutWall", new[]
         {

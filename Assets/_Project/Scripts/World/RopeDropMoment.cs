@@ -36,6 +36,13 @@ namespace Itan.World
                 if (actor != null) actor.Play(CharacterActor.Idle, 0.6f);
             }
 
+            yield return Drop();
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        /// <summary>The rope uncoils down from the cloud (used for Ajá, and again for Ìjàpá).</summary>
+        public IEnumerator Drop()
+        {
             ropePivot.gameObject.SetActive(true);
             for (float t = 0f; t < dropSeconds; t += Time.deltaTime)
             {
@@ -47,15 +54,20 @@ namespace Itan.World
             }
             ropePivot.localScale = Vector3.one;
             ropePivot.localRotation = Quaternion.identity;
-            yield return new WaitForSeconds(0.5f);
+        }
+
+        /// <summary>The rope is drawn back up into the cloud (a new night).</summary>
+        public void Retract()
+        {
+            ropePivot.localScale = new Vector3(1f, 0.001f, 1f);
+            ropePivot.localRotation = Quaternion.identity;
+            ropePivot.gameObject.SetActive(false);
         }
 
         public void ResetMoment()
         {
             if (singer != null) singer.Stop();
-            ropePivot.localScale = new Vector3(1f, 0.001f, 1f);
-            ropePivot.localRotation = Quaternion.identity;
-            ropePivot.gameObject.SetActive(false);
+            Retract();
         }
     }
 }

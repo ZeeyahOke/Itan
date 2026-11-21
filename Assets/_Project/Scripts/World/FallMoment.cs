@@ -14,6 +14,8 @@ namespace Itan.World
         [SerializeField] Transform ropeBottom;
         [SerializeField] Transform ropeTop;
         [SerializeField] Transform ropePivot;
+        [Tooltip("Lowers the rope when Ìjàpá sings, exactly as it came down for Ajá.")]
+        [SerializeField] RopeDropMoment ropeDrop;
         [SerializeField] GameObject shellWhole;
         [SerializeField] GameObject shellCracked;
 
@@ -57,6 +59,14 @@ namespace Itan.World
                 singer.Play();
                 Act(CharacterActor.Sing);
                 yield return new WaitForSeconds(song.length);
+            }
+
+            // The rope comes down for the stolen song, just as it did for Ajá.
+            if (ropeDrop != null)
+            {
+                Act(CharacterActor.Idle);
+                yield return ropeDrop.Drop();
+                yield return new WaitForSeconds(0.6f);
             }
 
             yield return Tween.Face(climber, ropeBottom.position + Vector3.forward, 0.2f);

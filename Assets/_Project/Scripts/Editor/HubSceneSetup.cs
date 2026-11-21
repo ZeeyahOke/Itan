@@ -158,8 +158,8 @@ namespace Itan.EditorTools
 
         // The elder sits on the stool across the fire; his voice comes from head height.
         static readonly Vector3 ElderHeadOffset = new Vector3(0f, 1.05f, 0.05f);
-        // Subtitles sit low, between the player and the fire, tilted up toward the eyes.
-        static readonly Vector3 SubtitlePosition = new Vector3(0f, 0.82f, 1.35f);
+        // Subtitles sit low, in front of the fire and below the elder, tilted up toward the eyes.
+        static readonly Vector3 SubtitlePosition = new Vector3(0f, 0.6f, 1.2f);
 
         [MenuItem("Itan/Scene/Add Narration")]
         public static void AddNarration()
@@ -191,7 +191,7 @@ namespace Itan.EditorTools
             canvasGo.AddComponent<CanvasScaler>().dynamicPixelsPerUnit = 2f;
             var rect = (RectTransform)canvasGo.transform;
             rect.sizeDelta = new Vector2(1100f, 180f);
-            rect.SetPositionAndRotation(SubtitlePosition, Quaternion.Euler(20f, 0f, 0f));
+            rect.SetPositionAndRotation(SubtitlePosition, Quaternion.Euler(30f, 0f, 0f));
             rect.localScale = Vector3.one * PixelsToMetres;
 
             var panelGo = new GameObject("Panel", typeof(RectTransform));
@@ -399,7 +399,7 @@ namespace Itan.EditorTools
         public static void ApplyUiLayout()
         {
             Place("StartMenu", MenuPosition, Quaternion.identity);
-            Place("Subtitles", SubtitlePosition, Quaternion.Euler(20f, 0f, 0f));
+            Place("Subtitles", SubtitlePosition, Quaternion.Euler(30f, 0f, 0f));
             Place("VoicePrompt", VoicePromptPosition, VoicePromptRotation);
             SaveScene();
             Debug.Log("[Itan] UI layout applied.");

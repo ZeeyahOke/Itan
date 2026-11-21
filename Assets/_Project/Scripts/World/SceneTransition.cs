@@ -117,6 +117,7 @@ namespace Itan.World
             {
                 var seat = FindFirstObjectByType<Itan.Player.SeatRecenter>();
                 if (seat != null) seat.RecenterNow();
+                if (Itan.Player.VisitorSpace.Instance != null) Itan.Player.VisitorSpace.Instance.ResetToSeat();
             }
             InStory = story;
         }

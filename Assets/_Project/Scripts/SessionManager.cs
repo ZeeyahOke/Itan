@@ -87,6 +87,7 @@ namespace Itan.Session
             calabash.ResetForNextVisitor();
             transition.Cancel();
             transition.ShowWorld(false);
+            if (Itan.Player.VisitorSpace.Instance != null) Itan.Player.VisitorSpace.Instance.ResetToSeat();
             Results = new SessionResults();
             ChangeState(new MenuState(this));
         }

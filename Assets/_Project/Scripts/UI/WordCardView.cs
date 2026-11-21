@@ -22,8 +22,9 @@ namespace Itan.UI
 
         void Awake()
         {
-            homePosition = transform.position;
-            homeRotation = transform.rotation;
+            // Local, so the card comes up in front of the visitor wherever they are (see VisitorSpace).
+            homePosition = transform.localPosition;
+            homeRotation = transform.localRotation;
             homeScale = transform.localScale;
             Hide();
         }
@@ -34,7 +35,7 @@ namespace Itan.UI
             pronunciation.text = card.pronunciation;
             meaning.text = card.englishMeaning;
             SetGlow(0f);
-            transform.SetPositionAndRotation(homePosition, homeRotation);
+            transform.SetLocalPositionAndRotation(homePosition, homeRotation);
             transform.localScale = homeScale;
             gameObject.SetActive(true);
         }

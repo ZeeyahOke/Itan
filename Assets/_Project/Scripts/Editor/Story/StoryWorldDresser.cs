@@ -62,6 +62,18 @@ namespace Itan.EditorTools
             foreach (var t in root.GetComponentsInChildren<Transform>(true))
                 GameObjectUtility.SetStaticEditorFlags(t.gameObject, StaticEditorFlags.BatchingStatic | StaticEditorFlags.ContributeGI | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic);
             foreach (var c in root.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+            // The stones round the foot of the rope are solid, so Ìjàpá lands on them rather than in them.
+            var spot = root.Find("RopeSpot");
+            if (spot != null)
+            {
+                foreach (var mf in spot.GetComponentsInChildren<MeshFilter>(true))
+                    mf.gameObject.AddComponent<MeshCollider>().sharedMesh = mf.sharedMesh;
+                // A flat box, not a primitive: a squashed cylinder keeps a capsule collider that balloons into a sphere.
+                var floor = new GameObject("GroundCollider");
+                floor.transform.SetParent(spot, false);
+                floor.transform.position = new Vector3(spot.position.x, -0.05f, spot.position.z);
+                floor.AddComponent<BoxCollider>().size = new Vector3(6f, 0.1f, 6f);
+            }
 
             StoryScenes.SaveAll();
             // Moments point at markers inside the dressing (e.g. the sky viewpoint), so re-link them.

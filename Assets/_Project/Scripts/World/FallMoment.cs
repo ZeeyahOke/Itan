@@ -23,6 +23,8 @@ namespace Itan.World
         [SerializeField] float climbSeconds = 2.2f;
         [SerializeField, Range(0.2f, 0.8f)] float cutAt = 0.5f;   // how far up the rope he gets
         [SerializeField] float fallSeconds = 0.7f;
+        [Tooltip("Where he lands, relative to the foot of the rope (toward the visitor, so the fall is seen).")]
+        [SerializeField] Vector3 landingOffset = new Vector3(0.14f, 0f, -0.54f); // the front stone of the ring
 
         [Tooltip("Ìjàpá's voice, at Ìjàpá.")]
         [SerializeField] AudioSource singer;
@@ -81,7 +83,7 @@ namespace Itan.World
             // Fall, speeding up, with a tumble.
             Act(CharacterActor.Fall);
             Vector3 from = climber.position;
-            Vector3 ground = ropeBottom.position + new Vector3(0.6f, 0f, -0.4f);
+            Vector3 ground = LandingPoint(ropeBottom.position + landingOffset);
             for (float t = 0f; t < fallSeconds; t += Time.deltaTime)
             {
                 float k = (t / fallSeconds) * (t / fallSeconds); // gravity-like ease in
@@ -98,6 +100,15 @@ namespace Itan.World
             shellCracked.SetActive(true);
             Act(CharacterActor.Land);
             yield return new WaitForSeconds(1.6f);
+        }
+
+        /// <summary>Lands on whatever is really there (the stones of the rope spot have colliders), not inside it.
+        /// The ray starts just above the ground so it never catches the sky platform overhead.</summary>
+        static Vector3 LandingPoint(Vector3 spot)
+        {
+            if (Physics.Raycast(spot + Vector3.up * 0.6f, Vector3.down, out var hit, 1.2f, ~0, QueryTriggerInteraction.Ignore))
+                return hit.point;
+            return spot;
         }
 
         public void ResetMoment()

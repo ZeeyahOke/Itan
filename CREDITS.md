@@ -12,6 +12,8 @@ them (the full list with URLs is in `Assets/_Project/ThirdPartyAssets.txt`).
 | Cool Turtle (100 Avatars) | Polygonal Mind | CC BY 4.0 | Ìjàpá, repainted as a tortoise |
 | David | Adobe Mixamo | Mixamo terms | The elder (download from mixamo.com; not redistributed here) |
 
+| Free Pack - VR Hands (Rigged) | PolyOne Studio (Sketchfab) | CC BY 4.0 | The visitor's hands, recoloured to a dark skin tone (`Assets/_Project/Art/Hands`) |
+
 The repainted textures for Ajá, his mother and Ìjàpá (`Assets/_Project/Art/Characters`)
 are adaptations of Polygonal Mind's CC BY 4.0 textures.
 
@@ -41,5 +43,5 @@ made in code (`Assets/_Project/Scripts/Editor/Story/ProcMesh.cs`).
 
 ## Audio
 
-Story narration and the elder's lines are recorded by the project team or generated
-with macOS text to speech. Sound effects and ambience are made for the project (CC0).
+The narrator's voice is generated with Kokoro TTS (kokoro-onnx, Apache 2.0, voice
+"bm_george") from the script exported by **Itan > Narrator > Export Narration Script**. Sound effects and ambience are made for the project (CC0).

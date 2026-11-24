@@ -13,7 +13,7 @@ namespace Itan.World
         /// <summary>The loaded story world, or null if its scene isn't loaded yet.</summary>
         public static StoryWorldRoot Current { get; private set; }
 
-        [Tooltip("Everything you see in the story. Starts hidden; the smoke transition shows it.")]
+        [Tooltip("Everything you see in the story. Keep it active in the scene so static batching can combine it; it is hidden here on load and shown by the smoke transition.")]
         [SerializeField] GameObject content;
 
         [Tooltip("One key moment per beat, in beat order. Each must implement IKeyMoment.")]
@@ -30,6 +30,10 @@ namespace Itan.World
         void Awake()
         {
             Current = this;
+#if UNITY_EDITOR
+            // Builds combine the static scenery at build time; the editor doesn't for this additive scene.
+            StaticBatchingUtility.Combine(content);
+#endif
             content.SetActive(false);
         }
 

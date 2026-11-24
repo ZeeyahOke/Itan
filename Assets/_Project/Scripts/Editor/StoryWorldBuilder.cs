@@ -47,7 +47,7 @@ namespace Itan.EditorTools
                 if (t.name != "RopePivot" && t.name != "Rope")
                     GameObjectUtility.SetStaticEditorFlags(t.gameObject, (StaticEditorFlags)~0);
 
-            world.gameObject.SetActive(false); // shown by the smoke transition
+            // Left active in the scene: Unity only static-batches active objects. StoryWorldRoot hides it on load.
             Save();
             Debug.Log("[Itan] Story world added (hidden).");
         }

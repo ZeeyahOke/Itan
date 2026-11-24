@@ -56,10 +56,12 @@ namespace Itan.World
         // so there is no hitch when the smoke rises.
         IEnumerator LoadStoryWorld()
         {
-            if (SceneManager.GetSceneByName(storyScene).isLoaded) yield break; // already open in the editor
+            if (SceneManager.GetSceneByName(storyScene).isLoaded) { LightProbes.TetrahedralizeAsync(); yield break; } // already open in the editor
             var op = SceneManager.LoadSceneAsync(storyScene, LoadSceneMode.Additive);
             if (op == null) { Debug.LogError("[Transition] Story scene '" + storyScene + "' is not in the build settings."); yield break; }
             yield return op;
+            // The story world brings its own light probes; fold them in so the characters pick them up.
+            LightProbes.TetrahedralizeAsync();
             Debug.Log("[Transition] Story world loaded");
         }
 

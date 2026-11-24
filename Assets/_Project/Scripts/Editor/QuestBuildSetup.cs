@@ -1,5 +1,8 @@
+using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.XR.OpenXR;
 
@@ -51,6 +54,30 @@ namespace Itan.EditorTools
 
             AssetDatabase.SaveAssets();
             Debug.Log("[Itan] Quest build settings applied: Android, IL2CPP, ARM64, min API 32, Meta Quest OpenXR feature on.");
+        }
+
+        /// <summary>
+        /// Builds the release APK to Builds/Itan.apk (signed with the debug key, which is
+        /// what sideloading needs). Menu: Itan > Build > Build Quest APK
+        /// </summary>
+        [MenuItem("Itan/Build/Build Quest APK")]
+        public static void BuildApk()
+        {
+            Apply();
+            Directory.CreateDirectory("Builds");
+            var scenes = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).ToArray();
+            var options = new BuildPlayerOptions
+            {
+                scenes = scenes,
+                locationPathName = "Builds/Itan.apk",
+                target = BuildTarget.Android,
+                targetGroup = BuildTargetGroup.Android,
+                options = BuildOptions.None,
+            };
+            EditorUserBuildSettings.buildAppBundle = false;
+            var report = BuildPipeline.BuildPlayer(options);
+            var sum = report.summary;
+            Debug.Log($"[Itan] Build {sum.result}: {sum.outputPath}, {sum.totalSize / 1048576f:F1} MB, {sum.totalErrors} error(s), {sum.totalWarnings} warning(s), {sum.totalTime.TotalMinutes:F1} min.");
         }
     }
 }
